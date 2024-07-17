@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Search Products by City</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<style>
+    /* Optional: Some basic styling */
+    #searchResults {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+    }
+    .product-item {
+        margin-bottom: 5px;
+        padding: 5px;
+        cursor: pointer;
+    }
+    .product-item:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+<script>
+$(document).ready(function(){
+    $('#searchInput').on('input', function(){
+        var query = $(this).val();
+
+        // Send AJAX request to the server
+        $.ajax({
+            url: 'search.php',
+            method: 'POST',
+            data: { query: query },
+            success: function(data) {
+                $('#searchResults').html(data);
+            }
+        });
+    });
+
+    // Handle click on product item
+    $(document).on('click', '.product-item', function(){
+        var productName = $(this).text().trim();
+        $('#searchInput').val(productName);
+        $('#searchResults').html('');
+    });
+});
+</script>
+</head>
+<body>
+
+<h2>Live Search Products by City</h2>
+
+<input type="text" id="searchInput" placeholder="Search for products in a city...">
+<div id="searchResults"></div>
+
+</body>
+</html>

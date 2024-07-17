@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+    <script>
+        // JavaScript for adding and removing attribute fields if needed
+        // This is optional and can be implemented based on requirements
+    </script>
+</head>
+<body>
+    <h2>Add a New Product</h2>
+    <form action="insert_product.php" method="post">
+        <label for="name">Product Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" required><br><br>
+        
+        <label>Attributes:</label><br>
+        <div id="attributes">
+            <div>
+                <input type="text" name="attributes[]" placeholder="Attribute Name">
+                <input type="text" name="values[]" placeholder="Value">
+            </div>
+        </div>
+        <button type="button" onclick="addAttribute()">Add Attribute</button>
+        
+        <br><br>
+        <input type="submit" value="Add Product">
+    </form>
+
+    <script>
+        function addAttribute() {
+            var div = document.createElement('div');
+            div.innerHTML = '<input type="text" name="attributes[]" placeholder="Attribute Name">' +
+                            '<input type="text" name="values[]" placeholder="Value">' +
+                            '<button type="button" onclick="removeAttribute(this)">Remove</button>';
+            document.getElementById('attributes').appendChild(div);
+        }
+
+        function removeAttribute(element) {
+            element.parentNode.remove();
+        }
+    </script>
+</body>
+</html>
