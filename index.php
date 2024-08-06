@@ -42,11 +42,39 @@ if (isset($_POST['search'])) {
                         aspect-ratio: 0 / 1;
                         justify-content: center;
                 }
+                
         </style>
 </head>
 
 <body>
+<style>
+        .ajex_search input,
+        select {
+            border: none;
+            padding: 10px;
+        }
 
+        .ajex_search input:focus,
+        select:focus {
+            outline: none;
+        }
+
+        .ajex_search {
+            border: 1px solid red;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ajex_search button {
+            background-color: ;
+            padding: 10px;
+            border: none;
+            background-color: gray;
+        }
+    </style>
         <!-- top nav start here -->
         <section class="d-none d-sm-none d-md-none d-lg-block">
                 <div class="top_nav">
@@ -108,11 +136,13 @@ if (isset($_POST['search'])) {
                         <ul class="nav p-3 border shadow-sm">
                                 <li class="nav-item me-auto"><a href="/" class="nav-link"><img src="logo/logo.png" height="75px" width="256px" alt="https://growindiaexport.com/"></a></li>
                                 <li class="nav-item mt-3">
-                                        <form action="search-product.php" method="GET">
-                                                <div class="input_box   ">
-                                                        <input type="search" placeholder="Search Here By Product Name / Company Name" name="query" class="p-2 px-3 border-end">
-                                                        <button class="px-2" type="submit">Submit</button>
-                                                </div>
+                                        <form action=" " class="mobile-search hidedesktop  ajex_search border  " id="liveSearchForm">
+                                                <select id="searchType" class="border-end   border-secondary" required>
+                                                        <option value="buyleads">Buyleads</option>
+                                                        <option value="product">Products</option>
+                                                </select>
+                                                <input type="search" class=" form-control" style="width:  ;" name="query" id="searchQuery" placeholder="Search..." required>
+                                                <button class="  " type="submit"><i class="icon-search"></i> Search</button>
                                         </form>
                                 </li>
                                 <li class="nav-item  "><a href="" class="nav-link"> <a href="post-requirement.php" class="btn btn-primary px-3 mx-2 rounded-pill">Post Your Buy Requirement</a></a></li>
@@ -1289,7 +1319,7 @@ if (isset($_POST['search'])) {
                                         <div id="carouselExample" class="carousel slide">
                                                 <div class="carousel-inner">
                                                         <div class="carousel-item active">
-                                                                <img src="image/banner/banner.jpg" height="" class="d-block w-100" alt="...">
+                                                                <img src="r.jpg" height="" class="d-block w-100" alt="...">
                                                         </div>
                                                         <div class="carousel-item">
                                                                 <img src="image/banner/banner.jpg" height="" class="d-block w-100" alt="...">
@@ -1323,7 +1353,7 @@ if (isset($_POST['search'])) {
                         </div>
                         <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                        <img src="image/banner/banner.jpg" class="d-block w-100" alt="...">
+                                        <img src="r.jpg" class="d-block w-100" alt="...">
                                 </div>
                                 <div class="carousel-item">
                                         <img src="image/banner/banner.jpg" class="d-block w-100" alt="...">
@@ -1642,14 +1672,14 @@ if (isset($_POST['search'])) {
 
                                         </div>
                                         <div class="about_cards   mt-5 p-3">
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">   400 Pages- Display No. of</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Products/Services on Portal</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  30 Pages-Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 400 Pages- Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Portal</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 30 Pages-Display No. of</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> 10- Buy Leads Everymonth</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Domain & Hosting</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Seo friendly Website</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Business Inquiry Access</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Google Listing</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Domain & Hosting</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Seo friendly Website</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Business Inquiry Access</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Google Listing</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Social Media Linking</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Link Your Website on Whatsapp</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Website Maintenance</p>
@@ -1660,8 +1690,8 @@ if (isset($_POST['search'])) {
                         <div class="col-lg-3 col-md-6 my-4">
                                 <div class="main_card_container border rounded shadow-lg">
                                         <div class="cards_container" style="background:#c25263;">
-                                                <div class="prosition_cards" >
-                                                        <div class="top_cards text-center" >
+                                                <div class="prosition_cards">
+                                                        <div class="top_cards text-center">
                                                                 <h3 class="text-white py-2" style="background-color: #7f2230;">₹ Prime Pro</h3>
                                                         </div>
                                                         <div class="round text-center text-white" style="background-color: #c25263;">
@@ -1671,16 +1701,16 @@ if (isset($_POST['search'])) {
 
                                         </div>
                                         <div class="about_cards   mt-5 p-3">
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">   400 Pages-Display No. of</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Products/Services on Portal</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  100 Pages-Display No. of</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Products/Services on Website</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  30-Buy Leads Everymonth</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 400 Pages-Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Portal</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 100 Pages-Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Website</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 30-Buy Leads Everymonth</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Domain & Hosting</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Seo friendly Website</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> SSL Certificate Google Listing</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Customer Support Executive</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Social Media Linking</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Customer Support Executive</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Social Media Linking</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Link Your Website on Whatsapp</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Mobile Responsive Website</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Website Maintenance</p>
@@ -1694,7 +1724,7 @@ if (isset($_POST['search'])) {
                                         <div class="cards_container" style="background-color: #6fd23e;">
                                                 <div class="prosition_cards">
                                                         <div class="top_cards text-center">
-                                                                <h3 class="text-white py-2" style="background-color: #2d6f0d;">₹   Ultra</h3>
+                                                                <h3 class="text-white py-2" style="background-color: #2d6f0d;">₹ Ultra</h3>
                                                         </div>
                                                         <div class="round text-center text-white" style="background-color: #6fd23e;">
                                                                 <h5 class="">₹80,999/ <br> <small class="fw-bold" style="font-size: 15px;">Year</small></h5>
@@ -1703,12 +1733,12 @@ if (isset($_POST['search'])) {
 
                                         </div>
                                         <div class="about_cards   mt-5 p-3">
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  400 Pages-Display No. of</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Products/Services on Portal</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 400 Pages-Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Portal</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> 150 Pages-Display No. of</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Website</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  60-Buy Leads Everymonth</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Domain & Hosting</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 60-Buy Leads Everymonth</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Domain & Hosting</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> SSL Certificate</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Business Inquiry Access</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Seo friendly Website</p>
@@ -1716,11 +1746,11 @@ if (isset($_POST['search'])) {
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted">Google Listing</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted">Mobile Responsive Website</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted">Trusted Seller Certificate</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Social Media Linking</p>     
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Link Your Website on Whatsapp</p>     
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Website Maintenance</p>     
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Import Export Manager Flipbook</p>     
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Control Panel of Website</p>     
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Social Media Linking</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Link Your Website on Whatsapp</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Website Maintenance</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Import Export Manager Flipbook</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted">Control Panel of Website</p>
 
                                         </div>
                                 </div>
@@ -1739,13 +1769,13 @@ if (isset($_POST['search'])) {
 
                                         </div>
                                         <div class="about_cards   mt-5 p-3">
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">   400 Pages-Display No. of on Portal</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  200 Pages-Display No. of</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Products/Services on Website</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 400 Pages-Display No. of on Portal</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> 200 Pages-Display No. of</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Products/Services on Website</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> 90-Buy Leads Everymonth</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Domain & Hosting</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Domain & Hosting</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Business Inquiry Access</p>
-                                                <p class="p-0 m-0 my-2 border-bottom text-muted">  Seo friendly Website</p>
+                                                <p class="p-0 m-0 my-2 border-bottom text-muted"> Seo friendly Website</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> SSL Certificate</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted"> Google Listing</p>
                                                 <p class="p-0 m-0 my-2 border-bottom text-muted">Customer Support Executive</p>
