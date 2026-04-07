@@ -1,41 +1,14 @@
-
-# # RewriteEngine On
- 
-
-# # # Rewrite for category.php
-# # RewriteRule ^category/([^/]+)/?$ category.php?type=category&cat_id=$1 [L]
-
-# #  RewriteEngine On
-# # RewriteBase /new_b2b/
-
-# # # Rewrite rule for SEO-friendly URL
-# # RewriteRule ^products/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [L]
-# # RewriteEngine On
-# # RewriteBase /new_b2b/
-
-# # RewriteCond %{REQUEST_FILENAME} !-f
-# # RewriteCond %{REQUEST_FILENAME} !-d
-# # RewriteRule ^products/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
+# <IfModule mod_rewrite.c>
 # RewriteEngine On
-# RewriteBase  growindiaexport.com/
-
+# RewriteBase /
+# RewriteRule ^index.php$ - [L]
 # RewriteCond %{REQUEST_FILENAME} !-f
 # RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^product/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
-# # RewriteRule ^products/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
-# RewriteRule ^product/([0-9]+)/?$ product.php?inner_cat_id=$1 [QSA,L]
-# RewriteRule ^states/([^/]+)/?$ states.php?state_name=$1 [QSA,L]
-# RewriteRule ^category/([0-9]+)$ /category.php?cat_id=$1 [L]
-# # RewriteRule ^states/([a-zA-Z0-9_-]+)$ states.php?state_name=$1 [L]
+# RewriteRule . /index.php [L]
+# </IfModule>
 
 
-
-
-
-
-
-# demo------------------------------------------------------------------------------------------
-# # RewriteEngine On
+# RewriteEngine On
  
 
 # # Rewrite for category.php
@@ -53,13 +26,89 @@
 # RewriteCond %{REQUEST_FILENAME} !-d
 # RewriteRule ^products/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
 RewriteEngine On
-RewriteBase  /growindiaexport.com/
+RewriteBase  growindiaexport.com/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^product/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
 # RewriteRule ^products/([0-9]+)/([^/]+)/?$ product.php?inner_cat_id=$1&state_name=$2 [QSA,L]
 RewriteRule ^product/([0-9]+)/?$ product.php?inner_cat_id=$1 [QSA,L]
-RewriteRule ^states/([^/]+)/?$ states.php?state_name=$1 [QSA,L]
-RewriteRule ^category/([0-9]+)$ /category.php?cat_id=$1 [L]
+
+
+# RewriteRule ^states/([^/]+)/?$ states.php?state_name=$1 [QSA,L]
+RewriteRule ^supplier-in-india/([0-9]+)-([a-zA-Z0-9\-]+)$ category.php?cat_id=$1&slug=$2 [L,QSA]
+
+
+
+
+# Match only the slug (e.g., /supplier-in-india/automobile-parts)
+RewriteRule ^supplier-in-india/([a-zA-Z0-9\-]+)$ category.php?slug=$1 [L,QSA] 
+# RewriteRule ^supplier-in-india/([0-9]+)$ /category.php?cat_id=$1 [L]    working  
+ 
+ 
+ #sub cat try with my own
+ RewriteRule ^sub-cat/([a-zA-Z0-9\-]+)$ sub-cat.php?sub_id=$1 [L,QSA] 
+ 
+ 
+ 
+#  RewriteRule ^micro/([0-9]+)$ /micro-category.php?micro_id=$1 [L,QSA]
+ RewriteRule ^manufacturer/([0-9]+)(.*)$ /micro-category.php?micro_id=$1 [L,QSA]    
+ 
+ 
+ 
+# RewriteRule ^search/([^/]+)/?$ /search-buyleads.php?searchType=buyleads&query=$1 [L,QSA]
+ 
+# RewriteRule ^search-product/([^/]+)/?$ /search-product.php?searchType=product&query=$1 [L,QSA]
+
+
+
+ 
+
+# Old URL format (keep this rule for backward compatibility)
+RewriteCond %{QUERY_STRING} ^searchType=product&query=([^&]+)$
+# RewriteRule ^search-product.php$ /search-product.php?searchType=product&query=%1 [L,QSA]
+
+# New SEO-friendly URL format
+RewriteRule ^search/([^/]+)/?$ /search-product.php?searchType=product&query=$1 [L,QSA]
+
+
+
+
+
+ 
 # RewriteRule ^states/([a-zA-Z0-9_-]+)$ states.php?state_name=$1 [L]
+# RewriteRule ^([^/]+)/$ /search-buyleads.php?searchType=buyleads&query=$1 [L,QSA]
+
+
+
+# 01
+RewriteRule ^search-product/([^/]+)$ /search-product.php?searchType=product&query=$1 [L,QSA]
+ 
+#  today
+# RewriteRule ^product/mango-plant/?$ /single-product.php?pro_id=32 [L,QSA]
+
+
+
+
+
+
+
+RewriteCond %{REQUEST_URI} ^/single-product/([0-9]+)(.*)$
+RewriteRule ^single-product/([0-9]+)(.*)$ /single-product.php?pro_id=$1 [L,QSA]
+
+# for buyleads category
+#  RewriteRule ^singal-buyleads/([0-9]+)(.*)$ /singal-buyleads.php?product_name=$1 [L,QSA]    working bottom
+RewriteRule ^buyers-and-suppliers/([^/]+)/?$ singal-buyleads.php?product_name=$1 [L,QSA]
+
+
+
+
+ RewriteRule ^news/([a-zA-Z0-9\-]+)$ singal-news.php?id=$1 [L,QSA] 
+
+
+ErrorDocument 404 /404.html
+
+
+
+
+

@@ -11,9 +11,9 @@ include "admin/config.php";
 
 
 if (isset($_POST['submit'])) {
-    $user_name = $_POST['user_name'];
-    $user_email = $_POST['user_email'];
-    $password = $_POST['password'];
+    $user_name = test_input($_POST['user_name']);
+    $user_email = test_input($_POST['user_email']);
+    $password = test_input($_POST['password']);
     // $user_role = $_POST['user_role'];
    
     
@@ -42,16 +42,35 @@ if (isset($_POST['submit'])) {
 
     }
 }
+
+
+function test_input($data) {
+    $data = trim($data);
+      $data = preg_replace('/\s+/', ' ', $data); // Remove all whitespace characters
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 ?>
 
 
 
+
+
+
+
+
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page  </title>
+  <title>Login Page</title>
+ 
+ <link rel="icon" type="image/x-icon" href="image/favicon.png">
+    <link rel="mask-icon" href="image/favicon.png">
+ <link rel="canonical" href="https://growindiaexport.com/supplier-login.php">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 
@@ -84,37 +103,40 @@ if (isset($_POST['submit'])) {
 <body>
   <div class="container">
     <div class="login-container">
-      <h2 class="text-center">Login </h2>
-      <!-- <p class="mt-3 text-success fw-bold ">?php echo ($_SESSION["otp"] == "") ? 'verification First': " OTP verification successful. You can now proceed with Login."; ?></p> -->
-      <p class="mt-3 text-success   text-capitalize">If You Are Not Verified Please Register First.</p>
-      <form method="post">
-        <!-- <p >OTP verification successful. You can now proceed with Login.</p> -->
+     <a href="/" class="text-decoration-none"><h2 class="text-center">Login</h2></a> 
+      <p class="mt-3 text-success text-capitalize">If You Are Not Verified Please Register First.</p>
+      <form method="post"  onsubmit="return checkCaptcha();">
         <div class="form-group mt-3">
-          <label for="username">Username </label>
-          <input type="text" name="user_name" class="form-control mt-2" id="username" placeholder="Enter username">
+          <label for="username">Username</label>
+          <input type="text" name="user_name" class="form-control mt-2" id="username" placeholder="Enter username" required>
         </div>
         <div class="form-group mt-3">
           <label for="email">Enter Your Email</label>
-          <input type="email" name="user_email" class="form-control mt-2" id="email" placeholder="Enter Your Email">
-          <input type="hidden" class="form-control" name="user_role">
-
+          <input type="email" name="user_email" class="form-control mt-2" id="email" placeholder="Enter Your Email" required>
         </div>
         <div class="form-group mt-3">
-          <label for="email">Enter Your Password</label>
-          <input type="password" name="password" class="form-control mt-2" id="password" placeholder="Enter Your Password">
-        
-
+          <label for="password">Enter Your Password</label>
+          <input type="password" name="password" class="form-control mt-2" id="password" placeholder="Enter Your Password" required>
         </div>
-        <!-- <div class="form-group mt-3">
-          
-          <input type="hidden" name="otp" class="form-control mt-2" id="email" placeholder="Enter Your Email" value="?php echo $_SESSION['otp'] ?>">
-        </div> -->
-        <button type="submit" name="submit" class="btn btn-primary btn-block mt-3 w-100" >Login</button>
-        <a  href="logout.php"  class="btn btn-danger fw-bold w-100 py-2 mt-3">logout</a>
-<!-- <a href="./free-register-user/index.php"></a> -->
+          <div class=" my-3">
+                                                                             <div class="g-recaptcha" data-sitekey="6LccliwrAAAAAF0XH-A1i7sbSyoKh-UG9LT6mkhy"></div>
+                                                                        </div>
+        <button type="submit" name="submit" class="btn btn-primary btn-block mt-3 w-100">Login</button>
+        <a href="logout.php" class="btn btn-danger fw-bold w-100 py-2 mt-3">Logout</a>
       </form>
     </div>
   </div>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      <script>
+   function checkCaptcha() {
+    var response = grecaptcha.getResponse();
+    if (response.length === 0) {
+        alert("Please verify you are human.");
+        return false;
+    }
+    return true;
+}
+</script>
   <!-- Bootstrap JS -->
   <script src="bootstrap/js/bootstrap.min.js"></script>
 

@@ -6,7 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+   <title>growindiaexport</title>
+ <link rel="icon" type="image/x-icon" href="image/favicon.png">
+    <link rel="mask-icon" href="image/favicon.png">
+<link rel="canonical" href="https://growindiaexport.com/advertise.php">
 
     <link rel="stylesheet" href="https://growindiaexport.com/assets/css/megadrop.css">
     <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
@@ -61,7 +64,85 @@
 </head>
 
 <body>
- 
+  <!-- top nav start here -->
+    <section class="d-none d-sm-none d-md-none d-lg-block">
+ <div class="header_top " style="border-bottom: 2px dashed white;background:rgb(11 53 94) ;">
+            <ul class="nav p-3  justify-content-center">
+                <li class="nav-item "><a href="/" class="nav-link"><img src="logo/logo.png" height="80px" width="250px" alt="http://growindiaexport.com/"></a></li>
+            </ul>
+        </div>
+    </section>
+    <!-- logo here -->
+
+    <!-- sm mobile nav start here -->
+     <!-- sm mobile nav start here -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary d-flex d-sm-flex d-md-flex d-lg-none">
+                <div class="container-fluid">
+                        <a class="navbar-brand" href="/"><img src="logo/logo.png" height="70px" width="200px" alt="http://growindiaexport.com/"></a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                                        <!-- <li class="nav-item">
+                                                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                                        </li> -->
+                                        <!-- <li class="nav-item">
+                                                <a class="nav-link" href="#">  </a>
+                                        </li> -->
+                                        <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" style="color: rgb(11 46 135);" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        For Buyers
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="https://growindiaexport.com/all-category.php"><i class="fa-solid fa-list"></i> Browse Suppliers</a></li>
+                                                        <li><a class="dropdown-item" href="https://growindiaexport.com/post-requirement.php"><i class="fa-solid fa-pen"></i> Post Buy Requirement</a></li>
+                                                        <li>
+                                                                <hr class="dropdown-divider">
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="#">Buyers FAQ</a></li>
+                                                </ul>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" style="color: rgb(11 46 135);" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        For Suppliers
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="https://growindiaexport.com/supplier-register.php"><i class="fa-solid fa-bullhorn"></i> Sell your Product</a></li>
+                                                        <li><a class="dropdown-item" href="https://growindiaexport.com/buyleads.php"><i class="fa-solid fa-tag"></i> Latest Buy Leads</a></li>
+                                                        <li>
+                                                                <hr class="dropdown-divider">
+                                                        </li>
+                                                        <li><a class="dropdown-item text-danger" href="https://growindiaexport.com/supplier-register.php">Create Account</a></li>
+                                                        <li><a class="dropdown-item text-success" href="https://growindiaexport.com/supplier-login.php">Login Here</a></li>
+                                                </ul>
+                                        </li>
+                                        <hr>
+                                        <li class="nav-item">
+                                                <a class="nav-link  " href="/" style="color: rgb(11 46 135);">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                                <a class="nav-link  " href="contact.php" style="color: rgb(11 46 135);"> Contact Us</a>
+                                        </li>
+                                        <li class="nav-item">
+                                                <a class="nav-link  " href="advertise.php" style="color: rgb(11 46 135);"> Advertise with Us</a>
+                                        </li>
+                                </ul>
+                                <form action="search-product.php" method="GET" class="d-flex" role="search">
+                                        <input class="form-control me-2" type="search" placeholder="Search Here By Product Name / Company Name" name="query">
+                                        <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                        </div>
+                </div>
+        </nav>
+        <!-- sm mobile nav end here -->
+
+
+
+    <!-- Your navigation and other HTML structure -->
+    <!-- ... -->
+
     <div class="container-fluid">
         <div class="row   ">
             <div class="col-lg-3 col-md-6 my-4">
@@ -291,7 +372,4 @@
         </div>
     </div>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
-    <script src="assets/css/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+ <?php include "footer.php"; ?>

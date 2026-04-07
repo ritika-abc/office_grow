@@ -10,9 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <title>growindiaexport</title>
+    <link rel="icon" type="image/x-icon" href="image/favicon.png">
+    <link rel="mask-icon" href="image/favicon.png">
+    <link rel="canonical" href="https://growindiaexport.com/buyleads.php">
+    <link rel="stylesheet" href="https://growindiaexport.com/assets/css/style.css">
+    <link rel="stylesheet" href="https://growindiaexport.com/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.min.css">
     <link rel="stylesheet" href="assets/css/megadrop.css">
     <style>
@@ -33,61 +36,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 </head>
 
 <body>
-    <!-- top nav start here -->
-    <section class="d-none d-sm-none d-md-none d-lg-block">
+    <?php
+    include "navbar.php";
+    ?>
+     <div class="container-fluid my-2">
+                <div class="row">
+                        <div class="col-12">
+                                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                                <li class="breadcrumb-item"><a href="https://growindiaexport.com/buyleads-category.php">  Buyleads Category</a></li>
 
+                                                <!--  -->
+                                                                                                        <li class="breadcrumb-item"><a class="text-capitalize" href="#">Trending Buyleads</a></li>
 
-
-        <!-- logo here -->
-        <div class="header_top " style="border-bottom: 2px dashed white;background:rgb(11 53 94) ;">
-            <ul class="nav p-3  justify-content-center">
-                <li class="nav-item "><a href="" class="nav-link"><img src="logo/logo.png" height="50px" width="180px" alt=""></a></li>
-            </ul>
+                                                                                        </ol>
+                                </nav>
+                        </div>
+                </div>
         </div>
-    </section>
+    <!-- top nav start here -->
+    <!--   <section class="d-none d-sm-none d-md-none d-lg-block">-->
+    <!--<div class="header_top " style="border-bottom: 2px dashed white;background:rgb(11 53 94) ;">-->
+    <!--           <ul class="nav p-3  justify-content-center">-->
+    <!--               <li class="nav-item "><a href="/" class="nav-link"><img src="logo/logo.png" height="50px" width="180px" alt="http://growindiaexport.com/"></a></li>-->
+    <!--           </ul>-->
+    <!--       </div>-->
+    <!--   </section>-->
     <!-- logo here -->
 
     <!-- sm mobile nav start here -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary d-flex d-sm-flex d-md-flex d-lg-none">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    <!-- sm mobile nav start here -->
+
     <!-- sm mobile nav end here -->
-    <!-- lg nav bar start here -->
 
 
 
@@ -96,13 +77,53 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <div class="container mt-4 bg-light py-5 rounded">
         <div class="row">
-            <div class="col-4">
+            <div class="col-4 d-none d-sm-none d-md-none d-lg-block">
 
+
+
+                <div class="buyleads mb-3" style="height: 400px; overflow-Y:scroll">
+                    <div class="buy_leads shadow-lg border  rounded p -2">
+                        <ul class="text-capitalize  list-group ">
+
+                            <?php
+                            // Database connection parameters
+                            include "./config.php";
+
+
+
+                            // SQL query
+                            $sql = 'SELECT  product_name , COUNT(product_name) as total_sales FROM buyleads  GROUP BY product_name ORDER BY buyleads_id DESC';
+
+                            // Execute the query
+                            $result = $con->query($sql);
+
+                            // Check for errors
+                            if (!$result) {
+                                die('Query failed: ' . $con->error);
+                            }
+
+                            // Fetch and output the results
+                            while ($row = $result->fetch_assoc()) {
+                                $product_name = $row['product_name'];
+
+                                $str_search =  strtolower(str_replace(" ", "+", $product_name));
+                                echo '<li class="list-group-item "><a class="text-dark    " href="search-buyleads.php?searchType=buyleads&query=' . $str_search . '"> <b style="color:rgb(46 80 138) !important">' . $row['product_name'] . '</b><span class=" "  >    (Buyleads: ' . $row['total_sales'] . ') </span></a></li>';
+                            }
+
+                            // Free the result set
+                            $result->free();
+
+                            // Close the connection
+                            $con->close();
+                            ?>
+                        </ul>
+                    </div>
+                </div>
                 <div class="serch_buyleads bg-white p-3 rounded">
                     <form id="searchForm">
 
                         <div class="buyleads_box  border ">
-                            <label for="options" class="sticky-top fw-bold fs-5  w-100 p-2" style="background-color: rgb(172 198 221) !important;">State</label>
+                            <label for="options" class="sticky-top fw-bold fs-5  w-100 p-2 text-white" style="background-color: rgb(46 80 138) !important;">State</label>
                             <div class="mt-2 p-3" style="height: 300px;overflow:scroll">
 
                                 <?php
@@ -112,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 $q = mysqli_query($con, $sel);
                                 while ($row = mysqli_fetch_array($q)) {
                                 ?>
-                                    <a href="search-buyleads.php?query=<?php echo  $query ?>&state_name=<?php echo $row['state_name'] ?>" class="d-block"><?php echo $row['state_name'] ?></a>
+                                    <a href="search-buyleads.php?query=<?php echo  $query ?>&state_name=<?php echo $row['state_name'] ?>" class="d-block "><?php echo $row['state_name'] ?></a>
                                 <?php } ?>
                             </div>
                         </div>
@@ -123,8 +144,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <form id="searchForm">
 
                         <div class="buyleads_box  border ">
-                            <label for="options" class="sticky-top fw-bold fs-5  w-100 p-2" style="background-color: rgb(172 198 221) !important;">Country</label>
+                            <label for="options" class="sticky-top fw-bold fs-5  w-100 p-2 text-white" style="background-color: rgb(46 80 138) !important;">Country</label>
                             <div class="mt-2 p-3" style="height: 300px;overflow:scroll">
+
                                 <?php
                                 include "config.php";
                                 $sel = "SELECT * FROM `countries`";
@@ -138,16 +160,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                 </div>
             </div>
-            <div class="col-8">
-                <form action="search-buyleads.php" method="GET" class="d-flex mb-3">
+            <div class="col-lg-8">
+                <form action="search-buyleads.php" method="GET" class="d-flex d-lg-none mb-3">
                     <div class="input-group mb-3">
                         <input name="query" type="text" class="form-control" placeholder="Search Buyleads">
-                        <button class="btn btn-dark" type="submit">Button</button>
+                        <button class="btn btn-dark" type="submit">Search</button>
                     </div>
                 </form>
-                <div class="col-12 my-3" id="buyleads">
-                    <!-- This div will be dynamically updated -->
-                </div>
+
                 <div class="old">
                     <div class="right_col" role="main">
                         <!-- top tiles -->
@@ -167,7 +187,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 // Cre
 
 
-
                             ?>
 
                                 <div class="col-12 my-4">
@@ -177,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                     <?php
 
                                     // SQL query to search for data in your database (replace 'table_name' with your actual table name and 'column_name' with the column you want to search)
-                                    $sql1 = "SELECT * FROM `buyleads` WHERE buyer_name LIKE '%" . $search_query . "%'" . " or queiry_for LIKE '%" . $search_query . "%'";
+                                    $sql1 = "SELECT * FROM `buyleads` WHERE name LIKE '%" . $search_query . "%'" . " or product_name LIKE '%" . $search_query . "%'";
                                     $result = $con->query($sql1);
 
                                     // Display the results
@@ -195,39 +214,66 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                                                 <h1>ritika </h1>
                                                                 <h5><?php echo $row2['queiry_for'] ?> <i class="fa-solid fa-check"></i></h5>
                                                                 <ul class="nav justify-content-between">
-                                                                    <li class="nav-item"><?php echo $row2['buyer_location'] ?></li>
+                                                                    <li class="nav-item"><?php echo $row2['location'] ?></li>
                                                                     <li class="nav-item"><?php echo $row2['accessed_at'] ?></li>
                                                                 </ul>
-                                                                <div class="row mt-3 table-borderless">
-                                                                    <div class="col-lg-6">
-                                                                        <table class="table p-0 m-0">
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0">Buyer Name</th>
-                                                                                <td class=" p-0 m-0">: <?php echo $row2['buyer_name'] ?></td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0">Quantity</th>
-                                                                                <td class=" p-0 m-0">: <?php echo $row2['quantity'] ?></td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0">Mobile Number</th>
-                                                                                <td class=" p-0 m-0">: +91-99******00</td>
-                                                                            </tr>
-
-                                                                        </table>
+                                                                <div class="row  mt-3 table-borderless">
+                                                                    <div class="col-lg-6  ">
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Name : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['name'] ?> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Quantity : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['quantity'] ?> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Mode Of Payment: </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['payment_mode'] ?> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
                                                                     </div>
                                                                     <div class="col-lg-6">
-                                                                        <table class="table p-0 m-0">
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0"> Requirement</th>
-                                                                                <td class=" p-0 m-0">: Urgent</td>
-                                                                            </tr>
-
-                                                                        </table>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Mobile Number : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> +91-99*********00 </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Email : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark">***@gmail.com </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Shipping Mode: </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['shipping_mode'] ?> </p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-block mt-5 mb-3" style="border-top: 2px dotted gray;"></div>
-                                                                <a href="" class="btn btn-dark text-capitalize"> <img src="include/trusted.png" height="50px" width="50px" alt="Trusted Logo"> send Requirement </a>
+                                                                <a href="" class="btn   text-capitalize" style="background:#e77702;"> <img src="include/trusted.png" height="50px" width="50px" alt="Trusted Logo">Details </a>
 
                                                             </div>
                                                         </div>
@@ -242,44 +288,59 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                                                             <h5><?php echo $row['queiry_for'] ?> <i class="fa-solid fa-check"></i></h5>
                                                             <ul class="nav justify-content-between">
-                                                                <li class="nav-item"><?php echo $row['buyer_location'] ?> </li>
+                                                                <li class="nav-item"><?php echo $row['location'] ?> </li>
                                                                 <li class="nav-item"><?php echo $row['accessed_at'] ?></li>
                                                             </ul>
-                                                            <div class="row mt-3 table-borderless">
-                                                                <div class="col-lg-6">
-                                                                    <table class="table p-0 m-0">
-                                                                        <tr class=" p-0 ">
-                                                                            <th class=" p-0 m-0">Buyer Name</th>
-                                                                            <td class=" p-0 m-0">: <?php echo $row['buyer_name'] ?></td>
-                                                                        </tr>
-                                                                        <tr class=" p-0 ">
-                                                                            <th class=" p-0 m-0">Quantity</th>
-                                                                            <td class=" p-0 m-0">: <?php echo $row['quantity'] ?></td>
-                                                                        </tr>
-                                                                        <tr class=" p-0 ">
-                                                                            <th class=" p-0 m-0">Mobile Number</th>
-                                                                            <td class=" p-0 m-0">: +91-99******00</td>
-                                                                        </tr>
+                                                            <div class="row  mt-3 table-borderless">
+                                                                <div class="col-lg-6  ">
 
-                                                                    </table>
+                                                                    <div class="row   text-capitalize">
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0" style="color: #055faf;"><b> Port Name : </b></p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0 text-dark"> </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row   text-capitalize">
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0" style="color: #055faf;"><b>Quantity : </b></p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0 text-dark"> <?php echo $row['quantity'] ?> </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row   text-capitalize">
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0" style="color: #055faf;"><b>Mode Of Payment: </b></p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0 text-dark"> <?php echo $row['payment_mode'] ?> </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--  -->
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <table class="table p-0 m-0">
-                                                                        <tr class=" p-0 ">
-                                                                            <th class=" p-0 m-0"> Requirement</th>
-                                                                            <td class=" p-0 m-0">: Urgent</td>
-                                                                        </tr>
-                                                                        <tr class=" p-0 ">
-                                                                            <th class=" p-0 m-0"> Buyer Mail</th>
-                                                                            <td class=" p-0 m-0 text-lowercase">: ****@gmail.com</td>
-                                                                        </tr>
 
-                                                                    </table>
+                                                                    <div class="row   text-capitalize">
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0" style="color: #055faf;"><b>Email : </b></p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <p class="m-0 p-0 text-dark">***@gmail.com </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row   text-capitalize">
+                                                                    <div class="col-6">
+                                                                        <p class="m-0 p-0" style="color: #055faf;"><b>Shipping Mode: </b></p>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <p class="m-0 p-0 text-dark"> <?php echo $row['shipping_mode'] ?> </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="d-block mt-5 mb-3" style="border-top: 2px dotted gray;"></div>
-
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -301,20 +362,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </div>
 
                                 <?php
+                                $serial =  1;
+                                $limit = 100;
+                                if (isset($_GET['page'])) {
+                                    $page = $_GET['page'];
+                                } else {
+                                    $page = 1;
+                                }
+                                $offset = ($page - 1) * $limit;
                                 include "config.php"; // database configuration
                                 /* Calculate Offset Code */
                                 if (isset($_SESSION["user_id"])) {
                                     $user_id = $_SESSION["user_id"];
                                 }
                                 //  $product_name =$_GET[$product_name1]  ;
-                                $sql = "SELECT * FROM  `buyleads`  ";
+                                $sql = "SELECT * FROM  `buyleads`  ORDER BY buyleads_id DESC LIMIT {$offset},{$limit}";
                                 $result = mysqli_query($con, $sql) or die("Query Failed.");
 
 
                                 if (mysqli_num_rows($result) > 0) {
 
 
-                                    $serial =  1;
+                                    $serial = $offset + 1;
                                     while ($row = mysqli_fetch_assoc($result)) {
 
 
@@ -325,57 +394,116 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                                     <div class="row">
                                                         <div class="col-12 ">
                                                             <div class="buyleads_cards p-3 shadow-lg bg-white rounded    text-capitalize" style=" ">
-                                                                <!--<h6>Product Name : ?php echo $product_name ?></h6>-->
-                                                                <h5 class=" " style="color :#2f3394;font-weight: bold;"><?php echo $row['queiry_for'] ?> <img src="trusted.png" alt="" height="auto" width="10%"> </h5>
+                                                                 <p class="my-1  float-end p-0"><span class="w-100 d-block"><img src="https://growindiaexport.com/image/image/date.gif" alt="https://growindiaexport.com/" >   <?php echo $row['date'] ?></span></p>
+                                                                <h5 class=" " style="color :#2f3394;font-weight: bold;"> <img src="https://growindiaexport.com/image/trust_buyleads.png" alt="https://growindiaexport.com/" > <?php echo $row['product_name'] ?></h5>
+                                                                <h6> <?php echo $row['queiry_for'] ?></h6>
                                                                 <ul class="nav justify-content-between">
-                                                                    <li class="nav-item" title="<?php echo $row['buyer_location'] ?>"> <i class="fa-solid fa-location-dot " style="color: #3fb635;margin-right:10px"></i> <?php echo $row['buyer_location'] ?> </li>
-                                                                    <li class="nav-item"><?php echo $row['accessed_at'] ?></li>
-                                                                </ul>
-                                                                <div class="row mt-3  ">
-                                                                    <div class="col-lg-6">
-                                                                        <table class="table p-0 m-0 table-borderless">
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0  " style="color:#055faf;">Buyer Name :</th>
-                                                                                <td class=" p-0 m-0"> <?php echo $row['buyer_name'] ?></td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0 " style="color:#055faf;">Quantity : </th>
-                                                                                <td class=" p-0 m-0"><?php echo $row['quantity'] ?></td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0 " style="color:#055faf;">Mobile Number :</th>
-                                                                                <td class=" p-0 m-0"> +91-99******00</td>
-                                                                            </tr>
-                                                                        </table>
+                                                                        <li class="nav-item text-capitalize" title="<?php echo $row['buyer_location'] ?>"> <i class="fa-solid fa-location-dot " style="color: #3fb635;margin-right:10px"></i> <?php echo $row['buyer_location']  ?> </li>
+                                                                       
+                                                                    </ul>
+                                                                <div class="row  mt-3 table-borderless">
+                                                                    <div class="col-lg-6  ">
+
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Port Name : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Quantity : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['quantity'] ?> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Mode Of Payment: </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['payment_mode'] ?> </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--  -->
                                                                     </div>
                                                                     <div class="col-lg-6">
-                                                                    <table class="table p-0 m-0 table-borderless">
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0  " style="color:#055faf;">Requirement :</th>
-                                                                                <td class=" p-0 m-0"> Urgent</td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0 " style="color:#055faf;">Quantity : </th>
-                                                                                <td class=" p-0 m-0"><?php echo $row['quantity'] ?></td>
-                                                                            </tr>
-                                                                            <tr class=" p-0 ">
-                                                                                <th class=" p-0 m-0 " style="color:#055faf;">Mobile Number :</th>
-                                                                                <td class=" p-0 m-0 text-lowercase"> ***@gmail.com</td>
-                                                                            </tr>
-                                                                        </table>
+
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Number : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark text-capitalize"> N/A</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Email : </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark text-lowercase">***@gmail.com </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row   text-capitalize">
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0" style="color: #055faf;"><b>Shipping Mode: </b></p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="m-0 p-0 text-dark"> <?php echo $row['shipping_mode'] ?> </p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-block mt-5 mb-3" style="border-top: 2px dotted gray;"></div>
 
-                                                                <a href="supplier-register.php" class="btn btn-secondary">Send Requirement</a>
+                                                                <a href="https://growindiaexport.com/supplier-register.php" class="btn btn-secondary" style="background:#e77702;">Buyer Detail</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                <?php }
-                                } ?>
+                                <?php
+                                        $serial++;
+                                    }
+                                } 
+                                
+                                 // show pagination
+                    $sql1 = "SELECT * FROM `buyleads`";
+                    $result1 = mysqli_query($con, $sql1) or die("Query Failed.");
+
+                    if (mysqli_num_rows($result1) > 0) {
+
+                        $total_records = mysqli_num_rows($result1);
+
+                        $total_page = ceil($total_records / $limit);
+
+                        echo '<ul class="pagination ">';
+                        if ($page > 1) {
+                            echo '<li class="page-item"><a class="page-link" href="buyleads.php?page=' . ($page - 1) . '">Prev</a></li>';
+                        }
+                        for ($i = 1; $i <= $total_page; $i++) {
+                            if ($i == $page) {
+                                $active = "active";
+                            } else {
+                                $active = " ";
+                            }
+                            echo '<li class="page-item ' . $active . '"><a class="page-link"  href="buyleads.php?page=' . $i . '">' . $i . '</a></li>';
+                        }
+                        if ($total_page > $page) {
+                            echo '<li class="page-item"><a class="page-link" href="buyleads.php?page=' . ($page + 1) . '">Next</a></li>';
+                        }
+
+                        echo '</ul>';
+                    }
+                                
+                                
+                                
+                                ?>
                         </div>
                     </div>
                 </div>
@@ -435,8 +563,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         });
     </script>
 
-<script src="/assets/css/bootstrap.bundle.min.js"></script>
 
-</body>
-
-</html>
+    <?php include "footer.php"; ?>
