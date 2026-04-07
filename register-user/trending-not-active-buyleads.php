@@ -54,6 +54,7 @@ include "config.php";
                 $item2  = $row2['item2'];
                 $item3  = $row2['item3'];
                 $plan1  = $row2['plan'];
+                $status  = $row2['status'];
                 $product_name  = $row2['product_name'];
             }
         }
@@ -66,41 +67,13 @@ include "config.php";
 
 
 
-
-        $sql = "SELECT 
-    buyleads.buyleads_id,
-    buyleads.accessed_at,    
-    buyleads.buyer_name,
-    buyleads.queiry_for,
-    buyleads.number,
-    buyleads.user_id,
-    buyleads.buyer_email,
-    buyleads.buyer_location,
-    buyleads.quantity,
-    buyleads.product_name,
-    buyleads.country_name,
-    buyleads.payment_mode,
-    buyleads.shipping_mode,
-    product_list.user_email,
-    product_list.product_name,
-    user.user_email
-FROM 
-    buyleads
-INNER JOIN 
-    product_list 
-    ON product_list.product_name = buyleads.queiry_for
-INNER JOIN 
-    user 
-    ON user.user_email = product_list.user_email
-    WHERE 
-    product_list.user_email = '$user_email'
-
-                ";
+ $serial =  1;
+        $sql = "SELECT * FROM  `buyleads` ORDER BY $serial DESC ";
         $result = mysqli_query($con, $sql) or die("Query Failed.");
         if (mysqli_num_rows($result) > 0) {
 
 
-            $serial =  1;
+           
             while ($row = mysqli_fetch_assoc($result)) {
 
 
@@ -110,7 +83,7 @@ INNER JOIN
                         <div class="col-lg-9 ">
                             <div class="buyleads_cards p-3 shadow-lg bg-white rounded border-start border-dark text-capitalize" style=" ">
                                 <!--<h6>Product Name : ?php echo $product_name ?></h6>-->
-                                <h5 class=" " style="color :#2f3394;font-weight: bold;"><?php echo $row['queiry_for'] ?> <img src="trusted.png" alt="" height="auto" width="10%"> </h5>
+                                <h5 class=" " style="color :#2f3394;font-weight: bold;"><?php echo $row['product_name'] ?> <img src="trusted.png" alt="" height="auto" width="10%"> </h5>
                                 <ul class="nav justify-content-between">
                                     <li class="nav-item" title="<?php echo $row['country_name'] ?>"> <i class="fa-solid fa-location-dot " style="color: #3fb635;margin-right:10px"></i> <?php echo $row['country_name'] ?> </li>
                                      
@@ -149,7 +122,13 @@ INNER JOIN
                                                 <p class="m-0 p-0 " style="color: #055faf;"><b>Mobile Number : </b></p>
                                             </div>
                                             <div class="col-6">
-                                                <p class="m-0 p-0 text-dark">N/A </p>
+                                                <p class="m-0 p-0 text-dark"> <?php
+if (!empty($row['number'])) {
+    echo substr($row['number'], 0, 3) . '...';
+} else {
+    echo 'N/A';
+}
+?> </p>
                                             </div>
                                         </div>
                                         <div class="row   text-capitalize">
@@ -171,10 +150,9 @@ INNER JOIN
                                     </div>
                                 </div>
                                 <div class="d-block mt-5 mb-3" style="border-top: 2px dotted gray;"></div>
-                                <form method="POST" action="get_buylead.php">
+                                 <form method="POST" action="get_buylead.php">
                                     <input type="hidden" name="buyleads_id" value="<?php echo $row['buyleads_id']; ?>">
                                     <input type="hidden" name="buyer_email" value="<?php echo $row['buyer_email']; ?>">
-                                
                                     <input type="hidden" name="queiry_for" value="<?php echo $row['queiry_for']; ?>">
                                     <input type="hidden" name="number" value="<?php echo $row['number']; ?>">
                                     <input type="hidden" name="buyer_name" value="<?php echo $row['buyer_name']; ?>">
@@ -183,7 +161,8 @@ INNER JOIN
                                     <input type="hidden" name="payment_mode" value="<?php echo $row['payment_mode']; ?>">
                                     <input type="hidden" name="shipping_mode" value="<?php echo $row['shipping_mode']; ?>">
                                     <input type="hidden" name="accessed_at" value="<?php echo $row['accessed_at']; ?>">
-                                     <button type="submit" class="btn btn-secondary text-center" style="width:200px;" name="submit"> Client Details</button>
+                                     <a href="tel:" class="btn btn-secondary" title="Active Your Plan">Client Details</a>
+                                  
 
                                 </form>
 

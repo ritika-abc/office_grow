@@ -1,3 +1,4 @@
+
 <?php
 include "config.php";
 
@@ -10,55 +11,53 @@ while ($row = mysqli_fetch_array($q)) {
 
 ?>
 
-    <div class="profile_card bg-white py-3">
-        <div class="profile-image py-5 bg-dark  text-center  m-auto d-flex justify-content-center align-items-center" style="height: 150px;width:150px;border-radius:50%">
-            <img src="<?php echo $row['image'] ?>" height="100px" width="100px" alt="profile image">
-        </div>
-        <table class="table my-3 text-capitalize">
-
-            <tr>
-                <th>Name </th>
-                <td><?php echo $row["user_name"] ?></td>
-            </tr>
-            <tr>
-                <th>email</th>
-                <td class="text-lowercase"><?php echo $row["user_email"] ?></td>
-            </tr>
-            <tr>
-                <th>number</th>
-                <td><?php echo $row["user_phone"] ?></td>
-            </tr>
-
-            <tr>
-                <th>company name</th>
-                <td><?php echo $row["company_name"] ?></td>
-            </tr>
-            <tr>
-                <th>company Address</th>
-                <td><?php echo $row["company_address"] ?></td>
-            </tr>
-            <tr>
-                <th>Your Plan</th>
-                <td class="text-danger"><?php echo $row["plan"] ?> </td>
-            </tr>
-            <tr>
-                <th>Your Plan expire</th>
-                <td class="text-danger"> <?php echo $row["expire"] ?></td>
-            </tr>
-            <tr>
-                <th> register date</th>
-                <td><?php echo $row["date"] ?></td>
-            </tr>
-
-        </table>
-
-
-
-
-
-
-        <a href="" class="mx-3">Edit Your Profile</a>
+<div class="container-fluid mt-4 border bg-light task_list_view2">
+    <div class="list_cont bg- ">
+        <h5>Personal Information</h5>
     </div>
+    <div class="row">
+        <div class="col-lg-6 my-3  ">
+            <div class="">
+                <label for="" class=" text-danger">User Name</label>
+                <input type="text" value="<?php echo $row["user_name"] ?>" class="form-control" disabled placeholder="User Name">
+            </div>
+        </div>
+        <div class="col-lg-6 my-3 ">
+            <div class="">
+                <label for="" class=" text-danger">User Email</label>
+                <input type="text" value="<?php echo $row["user_email"] ?>" class="form-control" val disabled placeholder="User Email">
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-lg-6 my-3  ">
+            <div class="">
+                <label for="" class=" text-danger">Number</label>
+                <input type="text" value="<?php echo $row["user_phone"] ?>" class="form-control" disabled placeholder="User Name">
+            </div>
+        </div>
+        <div class="col-lg-6 my-3 ">
+            <div class="">
+                <label for="" class=" text-danger">Your Plan</label>
+                <input type="text" value="<?php echo $row["plan"] ?>" class="form-control" val disabled placeholder="User plan">
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-lg-6 my-3  ">
+            <div class="">
+                <label for="" class=" text-danger">Your Plan expire</label>
+                <input type="text" value="<?php echo $row["expire"] ?>" class="form-control" disabled placeholder="User Name">
+            </div>
+        </div>
+        <div class="col-lg-6 my-3 ">
+            <div class="">
+                <label for="" class=" text-danger">Register Date</label>
+                <input type="text" class="form-control" value="<?php echo $row["date"] ?>" disabled placeholder="User Email">
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 }
 

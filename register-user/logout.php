@@ -6,6 +6,6 @@ session_start();
 session_destroy();
 
 // Redirect to login page after logout
-// header("location: supplier-register.php");
+header("location: index.php");
 
 ?>

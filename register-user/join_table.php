@@ -26,9 +26,7 @@ include "config.php";
 
     <!--</ul>-->
     <!-- top tiles -->
-    
     <div class="row">
-        
         <div class="col-12">
             <form action="search.php" method="GET" class="my-5  d-flex">
                 <input type="search" placeholder="Search Product Name / City" name="search_query" class="form-control w-75 rounded float-end">
@@ -36,8 +34,7 @@ include "config.php";
             </form>
         </div>
 
- <?php
-        include "nav.php"; ?>
+
 
 
         <?php
@@ -49,7 +46,7 @@ include "config.php";
             $query = mysqli_query($con, $sql);
             while ($row2 = mysqli_fetch_array($query)) {
                 # to select all the data
-                    $user_email  = $row2['user_email'];
+                echo   $user_email  = $row2['user_email'];
                 $item1  = $row2['item1'];
                 $item2  = $row2['item2'];
                 $item3  = $row2['item3'];
@@ -80,8 +77,7 @@ include "config.php";
     buyleads.product_name,
     buyleads.country_name,
     buyleads.payment_mode,
-    buyleads.shipping_mode,
-    product_list.user_email,
+    product_list.email,
     product_list.product_name,
     user.user_email
 FROM 
@@ -91,9 +87,7 @@ INNER JOIN
     ON product_list.product_name = buyleads.queiry_for
 INNER JOIN 
     user 
-    ON user.user_email = product_list.user_email
-    WHERE 
-    product_list.user_email = '$user_email'
+    ON user.user_email = product_list.email;
 
                 ";
         $result = mysqli_query($con, $sql) or die("Query Failed.");
@@ -113,7 +107,7 @@ INNER JOIN
                                 <h5 class=" " style="color :#2f3394;font-weight: bold;"><?php echo $row['queiry_for'] ?> <img src="trusted.png" alt="" height="auto" width="10%"> </h5>
                                 <ul class="nav justify-content-between">
                                     <li class="nav-item" title="<?php echo $row['country_name'] ?>"> <i class="fa-solid fa-location-dot " style="color: #3fb635;margin-right:10px"></i> <?php echo $row['country_name'] ?> </li>
-                                     
+                                    <li class="nav-item"><?php echo $row['accessed_at'] ?></li>
                                 </ul>
                                 <div class="row  mt-3 table-borderless">
                                     <div class="col-lg-6  ">
@@ -149,7 +143,7 @@ INNER JOIN
                                                 <p class="m-0 p-0 " style="color: #055faf;"><b>Mobile Number : </b></p>
                                             </div>
                                             <div class="col-6">
-                                                <p class="m-0 p-0 text-dark">N/A </p>
+                                                <p class="m-0 p-0 text-dark"> +91-99*********00 </p>
                                             </div>
                                         </div>
                                         <div class="row   text-capitalize">
@@ -160,30 +154,20 @@ INNER JOIN
                                                 <p class="m-0 p-0 text-dark">***@gmail.com </p>
                                             </div>
                                         </div>
-                                         <div class="row   text-capitalize">
-                                            <div class="col-6">
-                                                <p class="m-0 p-0" style="color: #055faf;"><b>Shipping Mode: </b></p>
-                                            </div>
-                                            <div class="col-6">
-                                                <p class="m-0 p-0 text-dark"> <?php echo $row['shipping_mode'] ?> </p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-block mt-5 mb-3" style="border-top: 2px dotted gray;"></div>
                                 <form method="POST" action="get_buylead.php">
                                     <input type="hidden" name="buyleads_id" value="<?php echo $row['buyleads_id']; ?>">
                                     <input type="hidden" name="buyer_email" value="<?php echo $row['buyer_email']; ?>">
-                                
                                     <input type="hidden" name="queiry_for" value="<?php echo $row['queiry_for']; ?>">
                                     <input type="hidden" name="number" value="<?php echo $row['number']; ?>">
                                     <input type="hidden" name="buyer_name" value="<?php echo $row['buyer_name']; ?>">
                                     <input type="hidden" name="buyer_location" value="<?php echo $row['buyer_location']; ?>">
                                     <input type="hidden" name="quantity" value="<?php echo $row['quantity']; ?>">
                                     <input type="hidden" name="payment_mode" value="<?php echo $row['payment_mode']; ?>">
-                                    <input type="hidden" name="shipping_mode" value="<?php echo $row['shipping_mode']; ?>">
                                     <input type="hidden" name="accessed_at" value="<?php echo $row['accessed_at']; ?>">
-                                     <button type="submit" class="btn btn-secondary text-center" style="width:200px;" name="submit"> Client Details</button>
+                                    <a href="tel:" class="btn btn-secondary" title="Active Your Plan">Client Details</a>
 
                                 </form>
 

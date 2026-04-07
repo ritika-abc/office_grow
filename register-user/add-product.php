@@ -1,197 +1,449 @@
-<?php
-// session_start();
+<style>
+    .editor1 {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        overflow-y: auto;
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-// if (!isset($_SESSION["password"])) {
-//     header("Location:index.php");
-// }
+    .toolbar1 {
+        margin-bottom: 10px;
+    }
+
+    .toolbar1 button {
+        padding: 8px 12px;
+        font-size: 14px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .toolbar1 button:hover {
+        background-color: #ddd;
+        border-color: #aaa;
+    }
+
+    .toolbar1 button:active {
+        background-color: #ccc;
+        border-color: #888;
+    }
+
+    .toolbar1 button:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 0, 255, 0.2);
+    }
+
+    .output-textarea1 {
+        width: 100%;
+        height: 200px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        white-space: pre-wrap;
+        background-color: #fff;
+    }
+</style>
+
+
+
+
+
+
+
+
+<?php
+ 
+session_start();
+if (isset($_SESSION["user_email"])) {
+    $user_email_1 = $_SESSION["user_email"];
+}
+include "config.php";
+
+// Check how many products the user has already added
+$sql_count = "SELECT COUNT(*) as product_count FROM `free-listing-product` WHERE `user_email`='$user_email_1'";
+$result_count = mysqli_query($con, $sql_count);
+$row_count = mysqli_fetch_assoc($result_count);
+
+if ($row_count['product_count'] >= 10) {
+    echo "<br><a class='alert alert-danger mt-5'>❌ You have reached the maximum limit of 10 products.</a>";
+    exit;
+}
+// ttttttttttttttttt
+
+
+$sql = "SELECT* FROM `user` WHERE `user_email`='$user_email_1'";
+$query = mysqli_query($con, $sql);
+while ($row = mysqli_fetch_array($query)) {
+    // to select all the data
+
+    $company_name = $row['company_name'];
+}
 ?>
 <?php
 
 
-include_once "include/header.php";
-include "config.php";
+include_once "include1/header.php";
+
 
 ?>
 <!-- insert query -->
 
 <?php
 if (isset($_POST['submit'])) {
+    // Form data
     $product_name = $_POST['product_name'];
-    // $prodict_image1 = $_POST['prodict_image1'];
-    // $product_image2 = $_POST['product_image2'];
-    // $product_image3 = $_POST['product_image3'];
     $cat_id = $_POST['cat_id'];
-    $sub_id = $_POST['sub_id'];
-    $micro_id = $_POST['micro_id'];
-    $inner_cat_id = $_POST['inner_cat_id'];
+    $location = $_POST['location'];
     $product_description = $_POST['product_description'];
     $company_name = $_POST['company_name'];
+    $price = $_POST['price'];
+    $unit = $_POST['unit'];
+    $about_company = $_POST['about_company'];
+    $user_email = $_POST['user_email'];
+    $countries_name = $_POST['countries_name'];
+    $state_name = $_POST['state_name'];
+    $moq = $_POST['moq'];
+    $packaging_type = $_POST['packaging_type'];
+    $product_life = $_POST['product_life'];
+    $feature = $_POST['feature'];
 
+    // Image validation
     $img1 = $_FILES["img1"]["name"];
-    $fld1 = "logo/" . $img1;
-    // $fld2 = "upload/" . $image;
-    move_uploaded_file($_FILES["img1"]['tmp_name'], $fld1);
-    $insert = "INSERT INTO `free-listing-product`(`product_name`,`product_description`, `cat_id`, `sub_id`,`micro_id`,`inner_cat_id`,`company_name`,`img1`) VALUES ('$product_name','$product_description','$cat_id','$sub_id','$micro_id','$inner_cat_id','$company_name','$fld1')";
+    $tmp_name = $_FILES["img1"]["tmp_name"];
+    $img_size = $_FILES["img1"]["size"];
+    $img_ext = strtolower(pathinfo($img1, PATHINFO_EXTENSION));
+    
+    // Validation rules
+    $max_file_size = 5 * 1024 * 1024; // 5MB
+    $allowed_extensions = ['jpg', 'jpeg', 'png'];
+    $max_width = 3000;
+    $max_height = 3000;
+
+    // Validate extension
+    if (!in_array($img_ext, $allowed_extensions)) {
+         echo "<a class='alert alert-danger mt-5' href='https://growindiaexport.com/register-user/add-product.php'> <br><br>  ❌ Only JPG, JPEG, and PNG files are allowed</a>.";
+        exit;
+    }
+
+    // Validate size
+    if ($img_size > $max_file_size) {
+        echo "<br><br><br> ❌ File size must not exceed 5MB.";
+        exit;
+    }
+
+    // Validate dimensions
+    $img_info = getimagesize($tmp_name);
+    if ($img_info) {
+        $width = $img_info[0];
+        $height = $img_info[1];
+
+        if ($width > $max_width || $height > $max_height) {
+            echo "<a class='alert alert-danger mt-5' href='https://growindiaexport.com/register-user/add-product.php'> <br><br> ❌   Image dimensions must not exceed 1500x1500 pixels. </a>"; exit;
+        }
+    } else {
+        echo "<br><br><br> ❌ Uploaded file is not a valid image.";
+        exit;
+    }
+
+    // Move file to folder
+    $fld1 = "logo/" . uniqid("img_") . "." . $img_ext;
+    if (!move_uploaded_file($tmp_name, $fld1)) {
+        echo "<br><br><br> ❌ Failed to upload image.";
+        exit;
+    }
+
+    // Insert into DB
+    $insert = "INSERT INTO `free-listing-product`(`product_name`,`product_description`,`cat_id`,`company_name`,`img1`,`unit`,`price`,`user_email`,`state_name`,`countries_name`,`location`,`about_company`,`moq`,`packaging_type`,`product_life`,`feature`) 
+               VALUES ('$product_name','$product_description','$cat_id','$company_name','$fld1','$unit','$price','$user_email','$state_name','$countries_name','$location','$about_company','$moq','$packaging_type','$product_life','$feature')";
 
     $query = mysqli_query($con, $insert);
+
+    if ($query) {
+      header('location:https://growindiaexport.com/register-user/view-product.php');
+    } else {
+        echo "<br><br> ❌ Database error: " . mysqli_error($con);
+    }
 }
+
 ?>
 
 
+<div class="midde_cont">
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Dashboard </h2>
 
+                </div>
 
+            </div>
+        </div>
+        <?php
+        include "nav.php"; ?>
 
+        <div class="container-fluid my-3">
+            <div class="row   graph">
+                <div class="col-lg-12 ">
+                    <div class="dash_blog">
+                        <div class="dash_blog_inner">
+                            <!-- <div class="dash_head">
+                                <h3><span><i class="fa fa-user yellow_color"></i> Edit Your Profile</span><span class="plus_green_bt"><a href="#">+</a></span></h3>
+                            </div> -->
 
+                            <div class="task_list_main">
+                                <form action="" method="post" enctype="multipart/form-data" class="text-capitalize" onsubmit="return checkCaptcha();">
+                                    <div class="container-fluid task_list_view2">
+                                        <div class="list_cont bg-light">
+                                            <h5>Add Your Products</h5>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-lg-12 my-3  ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">Product Name</label>
+                                                    <input type="text" name="product_name" class="form-control q   " placeholder="Product Name">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" value="<?php echo $company_name ?>" name="company_name" class="form-control q " placeholder="company name">
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-lg-6 my-3  ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">Product image <small>[Maximum size is 5MB
+                                                        and Ratio allowed 1500 x 1500]</small></label>
+                                                    <input type="file" class="form-control q " name="img1" placeholder="Product Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 my-3 ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold "> location</label>
+                                                    <input type="text" class="form-control q " name="location" placeholder="location">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                              <div class="col-lg-6 my-3 ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">Price</label>
+                                                    <input type="text" class="form-control q " name="price" placeholder="Price">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 my-3  ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">Unit</label>
+                                                    <select name="unit" class="form-control" id="">
+                                                        <option value="Select Unit">Select Unit</option>
+                                                        <option value="Piece(s)/Pcs">Piece(s)/Pcs</option>
+                                                        <option value="Carton">Carton</option>
+                                                        <option value="Dozen">Dozen</option>
+                                                        <option value="Meter(s)/m">Meter(s)/m</option>
+                                                        <option value="Metric Ton/t">Metric Ton/t</option>
+                                                        <option value="Kilogram(s)/kg">Kilogram(s)/kg</option>
+                                                        <option value="Gram(s)/g">Gram(s)/g</option>
+                                                        <option value="Liter(s)/L">Liter(s)/L</option>
+                                                        <option value="Gallon(s)/gal">Gallon(s)/gal</option>
+                                                        <option value="Ton(s)/ton">Ton(s)/ton</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
 
+                                        <div class="row ">
+                                              <div class="col-lg-6 my-3  ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">add Category</label>
+                                                    <select name="cat_id" class="form-control q " id="category-dropdown" required>
+                                                        <option value="">------ Select Category -----</option>
+                                                        <?php
+                                                        $sel = "SELECT * FROM `category`";
+                                                        $query = mysqli_query($con, $sel);
+                                                        while ($row = mysqli_fetch_array($query)) {
+                                                            // $cat_id = $row['cat_id'];
+                                                        ?>
+                                                            <option value="<?php echo $row['cat_id'] ?>" class="text-capitalize"> <?php echo $row['cat_name']  ?> </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 my-3  ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">Select Country</label>
+                                                    <select name="countries_name" class="form-control q " id="category-dropdown">
+                                                        <option value="">------ Select Country -----</option>
+                                                        <?php
+                                                        $sel = "SELECT * FROM `countries`";
+                                                        $query = mysqli_query($con, $sel);
+                                                        while ($row = mysqli_fetch_array($query)) {
+                                                            // $cat_id = $row['cat_id'];
+                                                        ?>
+                                                            <option value="<?php echo $row['country_name'] ?>" class="text-capitalize"> <?php echo $row['country_name']  ?> </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 my-3 ">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold ">State Name</label>
+                                                    <select name="state_name" class="form-control   " id="category-dropdown">
+                                                        <option value="">------ Select State Name -----</option>
+                                                        <?php
+                                                        $sel = "SELECT * FROM `states`";
+                                                        $query = mysqli_query($con, $sel);
+                                                        while ($row = mysqli_fetch_array($query)) {
+                                                            // $cat_id = $row['cat_id'];
+                                                        ?>
+                                                            <option value="<?php echo $row['state_name'] ?>" class="text-capitalize"> <?php echo $row['state_name']  ?> </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                             <div class="col-lg-12 my-3 ">
+                                                <div class="">
 
-<style>
-    input[type='file'] {
-        opacity: 0
-    }
-</style>
-<div class="right_col" role="main">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-10 bg-white p-4">
-                <form action="" method="post" enctype="multipart/form-data" class="text-capitalize">
-                    <h5>Add Your products </h5>
-                    <div class="row">
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for="" class=" ">product name</label>
-                            <input type="text" name="product_name" class="form-control">
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for="" class=" ">company name</label>
-                            <input type="text" name="company_name" class="form-control">
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for=""> Product image </label>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="border">
-                                        <input class="form-control" type="file" name="img1" id="formFile">
+                                                    <input type="hidden" value="<?php echo $user_email_1 ?>" class="form-control q " name="user_email" placeholder="User Email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
-                                </div>
+
+                                    <!-- details 2  profile-->
+                                    <div class="container-fluid mt-4 border bg-light task_list_view2">
+                                        <div class="list_cont bg- ">
+                                            <h5>Product Details</h5>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-lg-12 my-3  ">
+                                                <div class="">
+                                                    <!-- <label for="" class=" text- fw-bold">Product Description</label>
+                                                    <textarea name="product_description" rows="5" class="form-control q " id=""></textarea> -->
+                                                    <div class="toolbar1">
+                                                        <button onclick="document.execCommand('formatBlock', false, 'p')">Paragraph</button>
+                                                        <button onclick="document.execCommand('bold')">Bold</button>
+                                                        <button onclick="document.execCommand('italic')">Italic</button>
+                                                        <button onclick="document.execCommand('underline')">Underline</button>
+                                                        <button onclick="document.execCommand('insertOrderedList')">Ordered List</button>
+                                                        <button onclick="document.execCommand('insertUnorderedList')">Unordered List</button>
+                                                        <button onclick="document.execCommand('justifyCenter')">Center</button>
+
+                                                        <button onclick="document.execCommand('formatBlock', false, 'h3')">Heading 3</button>
+                                                        <button onclick="document.execCommand('formatBlock', false, 'h4')">Heading 4</button>
+                                                        <button onclick="document.execCommand('formatBlock', false, 'h5')">Heading 5</button>
+                                                        <button onclick="document.execCommand('formatBlock', false, 'h6')">Small Heading</button>
+
+                                                        <button onclick="insertTable()">Insert Table</button>
+
+
+                                                    </div>
+
+                                                    <!-- Editable Content Area -->
+                                                    <div class="editor1" contenteditable="true" oninput="updateTextarea()"></div>
+
+                                                    <!-- Textarea for showing content -->
+                                                    <textarea  name="product_description" class="output-textarea1" readonly></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 my-3  d-none">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold">Company Description</label>
+                                                    <textarea name="about_company" rows="5" class="form-control q " id=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3 my-3">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold">MOQ</label>
+                                                    <input class="form-control q " type="text" name="moq" id="formFile" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 my-3">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold">Packaging Type</label>
+                                                    <input class="form-control q " type="text" name="packaging_type" id="formFile" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 my-3">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold">Product Life</label>
+                                                    <input class="form-control q " type="text" name="product_life" id="formFile" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 my-3">
+                                                <div class="">
+                                                    <label for="" class=" text- fw-bold">Feature</label>
+                                                    <input class="form-control q " type="text" name="feature" id="formFile" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="read_more">
+                                                    <div class="form-check mb-3 alert alert-success p-2 px-3">
+                                                         <input  type="checkbox" class="form-check-input" required  value="read">
+                                                         <label  class="form-check-label text-dark fw-bold">All  <b class="text-dark"> product images used must be original or properly licensed.</b>  If you use images sourced from Google or any other platform that are not royalty-free or are protected by copyright, we will take strict action, including the removal of all your products and catalogs from our platform.</label>
+                                                    </div>
+                                                     <div class=" my-3">
+                                                                             <div class="g-recaptcha" data-sitekey="6LccliwrAAAAAF0XH-A1i7sbSyoKh-UG9LT6mkhy"></div>
+                                                                        </div>
+                                                    <input type="submit" name="submit" class="btn btn-danger  px-5">
+                                                    <input type="reset" name="submit" class="btn btn-warning   ">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-6 my-2 text-capitalize">
-                            <label for=""> add Category</label>
-                            <select name="cat_id" class="form-control" id="category-dropdown">
-                                <option value="">------ Select Category -----</option>
-                                <?php
-                                $sel = "SELECT * FROM `category`";
-                                $query = mysqli_query($con, $sel);
-                                while ($row = mysqli_fetch_array($query)) {
-                                    // $cat_id = $row['cat_id'];
-                                ?>
-                                    <option value="<?php echo $row['cat_id'] ?>" class="text-capitalize"> <?php echo $row['cat_name']  ?> </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for=""> add Sub Category</label>
-                            <select name="sub_id" class="form-control" id="sub-category-dropdown">
-                                <option value="">------ Select Sub Category -----</option>
-                                <?php
-                                // $_SESSION['cat_id'] = $cat_id;
-
-                                $sel = "SELECT * FROM `sub_cat` ";
-
-                                $query = mysqli_query($con, $sel);
-                                while ($row = mysqli_fetch_array($query)) {
-                                ?>
-                                    <option value="<?php echo $row['sub_id'] ?>" class="text-capitalize"><?php echo $row['sub_cat_name'] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for="">add micro Category</label>
-                            <select name="inner_cat_id" class="form-control" id="inner-category-dropdown">
-                                <option value="">------ Select Inner Category -----</option>
-                                <?php
-                                $sel = "SELECT * FROM `inner_cat`";
-                                $query = mysqli_query($con, $sel);
-                                while ($row = mysqli_fetch_array($query)) {
-                                ?>
-                                    <option value="<?php echo $row['inner_cat_id'] ?>" class="text-capitalize"><?php echo $row['inner_cat_name'] ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for="">add micro Category</label>
-                            <select name="micro_id" class="form-control" id="micro-category-dropdown">
-                                <option value="">------ Select Micro Category -----</option>
-                                <?php
-                                $sel = "SELECT * FROM `micro`";
-                                $query = mysqli_query($con, $sel);
-                                while ($row = mysqli_fetch_array($query)) {
-                                ?>
-                                    <option value="<?php echo $row['micro_id'] ?>" class="text-capitalize"><?php echo $row['micro_name'] ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-12 col-lg-6 my-2">
-                            <label for=""> Seller Location Country  and State   </label>
-                            <input type="text"  class="form-control">
-                        </div>
-
-                        <div class="col-12">
-                            <hr>
-                        </div>
-                        <h5 class="mt-3">Product Details</h5>
-                        <div class="col-12 my-2">
-                            <label for="">Product Description</label>
-                            <textarea name="product_description" rows="5" class="form-control" id=""></textarea>
-                        </div>
-
-
-
-
                     </div>
-                    <hr>
-                    <!-- <div class="row my-4 border border-warning p-3 rounded">
-                        <div class="col-12">
-                            <h5>Company Details / optional details*</h5>
-                            <div class="col-12 col-md-3 my-2">
-                                <label for="">Company Name</label>
-                                <input class="form-control   " name=" " type="text" id="formFile">
-                            </div>
-                            <div class="col-12 col-md-3 my-2">
-                                <label for="">Company experience</label>
-                                <input class="form-control   " name="company_experience" type="text" id="formFile">
-                            </div>
-                            <div class="col-12 col-md-3 my-2">
-                                <label for="">Company Logo</label>
-                                <div class="border">
-                                    <input class="form-control   " name="company_experience" type="file" id="formFile">
+                </div>
 
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3 my-2">
-                                <label for="">Company Type</label>
-                                <select name="" class="form-control" id="">
-                                    <option value="">---- Select----</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-md-12 my-2">
-                                <label for="">Company decsription</label>
-                               <textarea name="" class="form-control" id=""></textarea>
-                            </div>
-                        </div>
-                    </div> -->
-                    <input type="submit" name="submit" class="btn btn-danger  w-25">
-                    <input type="reset" name="submit" class="btn btn-warning   ">
-                </form>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    function updateTextarea() {
+        // Get the content from the editor
+        const editorContent = document.querySelector('.editor1').innerHTML;
+        // Get the textarea and update its value
+        const textarea = document.querySelector('.output-textarea1');
+        textarea.value = editorContent;
+    }
 
+    // Insert Table Function
+    function insertTable() {
+        const rows = prompt("Enter number of rows:", "2");
+        const cols = prompt("Enter number of columns:", "2");
+
+        if (rows && cols) {
+            let table = "<table class='table' cellpadding='5' cellspacing='0'>";
+            for (let i = 0; i < rows; i++) {
+                table += "<tr>";
+                for (let j = 0; j < cols; j++) {
+                    table += "<td>&nbsp;</td>"; // Empty cells
+                }
+                table += "</tr>";
+            }
+            table += "</table>";
+
+            // Insert the table at the current cursor position
+            document.execCommand('insertHTML', false, table);
+        }
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('#category-dropdown').on('change', function() {
@@ -258,24 +510,49 @@ if (isset($_POST['submit'])) {
     // });
 </script>
 
-<!-- /page content -->
+
+<script>
+    // Get all elements with class 'q' (the three input fields)
+    const inputs = document.getElementsByClassName('q');
+
+    // Special characters to check for
+    const specialCharacters = ['<', '>', '#', '^',   '*', '!', '~', '`', '$',  '(', ')'];
+
+    // Function to validate input and alert if special characters are detected
+    function validateInput(event) {
+        const inputValue = event.target.value;
+
+        // Check if any special character is found in the input
+        for (let char of specialCharacters) {
+            if (inputValue.includes(char)) {
+                alert("Special character detected!");
+                event.target.value = ""; // Clear the input value
+                break; // Stop after the first special character is found
+            }
+        }
+    }
+
+    // Add event listener to all inputs
+    for (let input of inputs) {
+        input.addEventListener('input', validateInput);
+    }
+</script>
+
+<script>
+   function checkCaptcha() {
+    var response = grecaptcha.getResponse();
+    if (response.length === 0) {
+        alert("Please verify you are human.");
+        return false;
+    }
+    return true;
+}
+</script>
+   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <?php
-include_once "include/footer.php";
+include "include1/footer.php";
 ?>
 
-<!-- <div class="container">
-    <div class="row">
-        <div class="col-12 col-lg-3">
-            <img src="" height="auto" width="100%" alt="">
-            <h3>abc</h3>
-        </div>
-        <div class="col-12 col-lg-3">
-            <img src="" height="auto" width="100%" alt="">
-            <h3>abc</h3>
-        </div>
-        <div class="col-12 col-lg-3">
-            <img src="" height="auto" width="100%" alt="">
-            <h3>abc</h3>
-        </div>
-    </div>
-</div> -->
+
+
+ 
