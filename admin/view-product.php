@@ -36,16 +36,17 @@ include_once "include/header.php";
 
                     <tbody class=" ">
                         <thead>
-                            <th>S.No.</th>
-                            <th>product image</th>
-                            <th>Logo</th>
-                            <th>product name</th>
-                            <th>product price</th>
-                            <th>product description</th>
-                            <th>company name</th>
-                            <th>moq</th>
-                            <th>date</th>
-                        </thead>
+                                <th>S.No.</th>
+                                <th>product image</th>
+                                <th>Company Logo</th>
+                                <th>Product Name</th>
+                                <!--<th>product description</th>-->
+                                <th>Price</th>
+                                <th>Comapny Name</th>
+                                <th>MOQ</th>
+                                <th>Date</th>
+                                <th>Edit</th>
+                            </thead>
                         <?php
 
                         // SQL query to search for data in your database (replace 'table_name' with your actual table name and 'column_name' with the column you want to search)
@@ -59,17 +60,30 @@ include_once "include/header.php";
                             while ($row = $result->fetch_assoc()) {
                                 // echo "<li>" . $row["product_name"] . "</li>"; // Display the result here
                         ?>
-                                <tr>
-
-                                    <td class='id'><img src="" height="50px" width="50px" alt=""> <img src="" height="50px" width="50px" alt=""> <img src="" height="50px" width="50px" alt=""></td>
-                                    <td class='id'><img src="" height="50px" width="50px" alt=""> </td>
-                                    <td><?php echo $row['product_name']; ?></td>
-                                    <td><?php echo $row['price']; ?></td>
-                                    <td><?php echo $row['product_description']; ?></td>
-                                    <td><?php echo $row['company_name']; ?></td>
-                                    <td><?php echo $row['moq']; ?></td>
-                                    <td><?php echo $row['date']; ?></td>
-                                </tr>
+                               <tr>
+                                        <td><?php echo $serial; ?></td>
+                                        <td>
+                                            <div class="img_box" style="width: 150px;height:150px;">
+                                                <img src="<?php echo $row['product_image1'] ?>" height="50px" width="50px" alt="">  
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="img_box" style="width: 150px;height:150px;">
+                                                <img src="<?php echo $row['company_logo'] ?>" height="50px" width="50px" alt="">  
+                                            </div>
+                                        </td>
+                                        <td><?php echo $row['product_name']; ?></td>
+                                        <td><?php echo $row['price']; ?></td>
+                                        <!--<td>-->
+                                        <!--    <div class="content_box  border" style="width: 150px;height:150px;overflow:scroll">-->
+                                        <!--        ?php echo $row['product_description']; ?> -->
+                                        <!--    </div>-->
+                                        <!--</td>-->
+                                        <td><?php echo $row['company_name']; ?></td>
+                                        <td><?php echo $row['moq']; ?></td>
+                                        <td><?php echo $row['date']; ?></td>
+                                        <td><a href="update-product.php?pro_id=<?php echo $row['pro_id'] ?>" class="btn btn-sm btn-success"><i class="fa-solid fa-pen-to-square"></i></a> <a href="delete-product.php?pro_id=<?php echo $row['pro_id'] ?>" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a></td>
+                                    </tr>
                     <?php
                             }
                             echo "</ul>";
@@ -92,7 +106,7 @@ include_once "include/header.php";
                     <?php
                     include "config.php"; // database configuration
                     /* Calculate Offset Code */
-                    $limit = 15;
+                    $limit = 50;
                     if (isset($_GET['page'])) {
                         $page = $_GET['page'];
                     } else {
@@ -109,12 +123,13 @@ include_once "include/header.php";
                                 <th>S.No.</th>
                                 <th>product image</th>
                                 <th>Company Logo</th>
-                                <th>product price</th>
+                                <th>Product Name</th>
                                 <!--<th>product description</th>-->
-                                <th>company name</th>
-                                <th>moq</th>
-                                <th>date</th>
-                                <th>edit</th>
+                                <th>Price</th>
+                                <th>Comapny Name</th>
+                                <th>MOQ</th>
+                                <th>Date</th>
+                                <th>Edit</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -125,7 +140,7 @@ include_once "include/header.php";
                                         <td><?php echo $serial; ?></td>
                                         <td>
                                             <div class="img_box" style="width: 150px;height:150px;">
-                                                <img src="<?php echo $row['product_image1'] ?>" height="50px" width="50px" alt=""> <img src="<?php echo $row['product_image2'] ?>" height="50px" width="50px" alt=""> <img src="<?php echo $row['product_image3'] ?>" height="50px" width="50px" alt="">
+                                                <img src="<?php echo $row['product_image1'] ?>" height="50px" width="50px" alt="">  
                                             </div>
                                         </td>
                                         <td>
@@ -143,7 +158,7 @@ include_once "include/header.php";
                                         <td><?php echo $row['company_name']; ?></td>
                                         <td><?php echo $row['moq']; ?></td>
                                         <td><?php echo $row['date']; ?></td>
-                                        <td><a href="update-product.php?pro_id=<?php echo $row['pro_id'] ?>">Edit</a></td>
+                                        <td><a href="update-product.php?pro_id=<?php echo $row['pro_id'] ?>" class="btn btn-sm btn-success"><i class="fa-solid fa-pen-to-square"></i></a> <a href="delete-product.php?pro_id=<?php echo $row['pro_id'] ?>" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a></td>
                                     </tr>
                                 <?php
                                     $serial++;

@@ -10,7 +10,7 @@ include_once "include/header.php";
     <div class="row">
         <div class="col-12">
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="my-5  d-flex">
-                <input type="search" placeholder="Search Here By seller Name / Company Name" name="search_query" class="form-control w-75 rounded float-end">
+                <input type="search" placeholder="Search by Email & Company Name" name="search_query" class="form-control w-75 rounded float-end">
                 <input type="submit" name="search" class="btn-sm btn-success">
             </form>
         </div>
@@ -34,22 +34,31 @@ include_once "include/header.php";
             <div class="col-12 my-4">
                 <table class="table  table-striped table-success table ">
                   
-                    <thead class="text-capitalize">
-                        <th>S.No.</th>
-                        <th>product image</th>
-                        <th>product name</th>
-                        <th>product price</th>
-                        <th>product description</th>
-                        <th>company name</th>
-                        <th>moq</th>
-                        <th>start date</th>
-                    </thead>
+                    <thead class=" ">
+                                
+                                    <th>Edit</th>   
+                                <th> Logo</th>
+                                <th> Company name</th>
+                                <th>User Name</th>
+                                <th> Email</th>
+                                <th>Password</th>
+                                <th> Phone</th>
+                                <th>Plan</th>
+                               
+                              
+                                <th>State</th>
+                                <th>Gst</th>
+                                <th> Register Date</th>
+                                <th>Expire Plan</th>                               
+                                <th>Start  Plan</th>                              
+                                
+                            </thead>
                     <tbody class=" ">
 
                         <?php
 
                         // SQL query to search for data in your database (replace 'table_name' with your actual table name and 'column_name' with the column you want to search)
-                        $sql = "SELECT * FROM user WHERE user_name LIKE '%" . $search_query . "%'" . " or user_email LIKE '%" . $search_query . "%'";
+                        $sql = "SELECT * FROM user WHERE company_name LIKE '%" . $search_query . "%'" . " or user_email LIKE '%" . $search_query . "%'";
                         $result = $con->query($sql);
 
                         // Display the results
@@ -59,19 +68,27 @@ include_once "include/header.php";
                             while ($row = $result->fetch_assoc()) {
                                 // echo "<li>" . $row["product_name"] . "</li>"; // Display the result here
                         ?>
-                                <tr>
+                                 <tr>
+                                      
+                                         <td style="width:50px"> <a href="user-update.php?user_id=<?php echo $row['user_id'] ?>" class="btn btn-success btn-sm w-100 mt-3">Edit</a> <a href="delete-user.php?user_id=<?php echo $row['user_id'] ?>" class="btn btn-danger btn-sm w-100">Delete</a></td>
+                                        <td class='id'><img src="<?php echo $row['image']; ?>" height="50px" width="50px" alt=""> </td>
+                                        <td><?php echo $row['company_name']; ?></td>
+                                        <td><?php echo $row['user_name']; ?> </td>
+                                        <!-- <td>?php echo $row['user_name']; ?></td> -->
+                                        <td><?php echo $row['user_email']; ?></td>
+                                        <td><?php echo $row['password']; ?></td>
+                                        <td><?php echo $row['user_phone']; ?></td>
+                                        <td><?php echo $row['plan']; ?></td>
+                                        
+                                        <td><?php echo $row['state']; ?></td>
+                                        <td><?php echo $row['gst']; ?></td>
+                                        <td><?php echo $row['date']; ?></td>
 
-                                    <td class='id'><img src="<?php echo $row['image']; ?>" height="50px" width="50px" alt=""> </td>
-                                    <td><?php echo $row['user_name']; ?></td>
-                                    <td><?php echo $row['user_email']; ?></td>
-                                    <td><?php echo $row['user_phone']; ?></td>
-                                    <td><?php echo $row['company_name']; ?></td>
-                                    <td><?php echo $row['plan']; ?></td>
-                                    <td><?php echo $row['date']; ?></td>
-                                    <td><?php echo $row['otp']; ?></td>
-                                    <td><?php echo $row['state']; ?></td>
-                                    <td><?php echo $row['gst']; ?></td>
-                                </tr>
+                                        <td><?php echo $row['expire']; ?></td>
+                                        <td><?php echo $row['start_date']; ?></td>
+                                       
+
+                                    </tr>
                     <?php
                             }
                             echo "</ul>";
@@ -108,23 +125,26 @@ include_once "include/header.php";
                     $result = mysqli_query($con, $sql) or die("Query Failed.");
                     if (mysqli_num_rows($result) > 0) {
                     ?>
-                        <table class="table  table-striped table-light table overflow-scroll">
-                            <thead class="text-capitalize">
-                                <th>S.No.</th>
-                                <th>user name</th>
-                                <th> logo</th>
-                                <th> email</th>
-                                <th> phone</th>
-                                <th> company name</th>
-                                <th>plan</th>
+                       <div class="shadow-lg" style="width:100%;overflow-x:auto">
+                            <table class="table  table-striped table-light table overflow-scroll" style="width:2200px">
+                            <thead class="">
+                                <th>sno.</th>
+                                    <th>Edit</th>   
+                                <th> Logo</th>
+                                <th> Company name</th>
+                                <th>User Name</th>
+                                <th> Email</th>
+                                <th>Password</th>
+                                <th> Phone</th>
+                                <th>Plan</th>
                                
-                                <th>otp</th>
-                                <th>state</th>
-                                <th>gst</th>
-                                <th> register date</th>
-                                <th>expire plan</th>                               
-                                <th>start  plan</th>                               
-                                
+                              
+                                <th>State</th>
+                                <th>Gst</th>
+                                <th> Register Date</th>
+                                <th>Expire Plan</th>                               
+                                <th>Start  Plan</th>   
+                            
                             </thead>
                             <tbody>
                                 <?php
@@ -133,20 +153,23 @@ include_once "include/header.php";
                                 ?>
                                     <tr>
                                         <td><?php echo $serial; ?></td>
-                                        <td><?php echo $row['user_name']; ?>  <a href="user-update.php?user_id=<?php echo $row['user_id'] ?>" class="btn btn-success btn-sm w-100 mt-3">Edit</a> <a href="" class="btn btn-danger btn-sm w-100">Delete</a></td>
+                                         <td style="width:50px"> <a href="user-update.php?user_id=<?php echo $row['user_id'] ?>" class="btn btn-success btn-sm w-100 mt-3">Edit</a> <a href="delete-user.php?user_id=<?php echo $row['user_id'] ?>" class="btn btn-danger btn-sm w-100">Delete</a></td>
                                         <td class='id'><img src="<?php echo $row['image']; ?>" height="50px" width="50px" alt=""> </td>
+                                        <td><?php echo $row['company_name']; ?></td>
+                                        <td><?php echo $row['user_name']; ?> </td>
                                         <!-- <td>?php echo $row['user_name']; ?></td> -->
                                         <td><?php echo $row['user_email']; ?></td>
+                                        <td><?php echo $row['password']; ?></td>
                                         <td><?php echo $row['user_phone']; ?></td>
-                                        <td><?php echo $row['company_name']; ?></td>
                                         <td><?php echo $row['plan']; ?></td>
-                                        <td><?php echo $row['otp']; ?></td>
+                                        
                                         <td><?php echo $row['state']; ?></td>
                                         <td><?php echo $row['gst']; ?></td>
                                         <td><?php echo $row['date']; ?></td>
 
                                         <td><?php echo $row['expire']; ?></td>
                                         <td><?php echo $row['start_date']; ?></td>
+                                       
                                         
 
 
@@ -156,6 +179,7 @@ include_once "include/header.php";
                                 } ?>
                             </tbody>
                         </table>
+                       </div>
                     <?php
                     } else {
                         echo "<h3>No Results Found.</h3>";
@@ -193,7 +217,7 @@ include_once "include/header.php";
             </div>
     </div>
 </div>
-<br />
+ 
 </div>
 
 

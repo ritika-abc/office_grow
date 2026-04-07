@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
 
         echo "<script>alert('Welcome')</script>";
 
-        header("location:add_category.php");
+        header("location:dashboard.php");
     } else {
         echo "<script>alert('not matched !!!!')</script>";
     }

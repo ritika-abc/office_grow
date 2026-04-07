@@ -50,20 +50,51 @@ move_uploaded_file($_FILES["sub_cat_image"]['tmp_name'], $fld1);
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<form action="" method="post" enctype="multipart/form-data">
-         Sub cat name : <input type="text" value="<?php echo $sub_cat_name ?>" name="sub_cat_name"> <br>
-    
-         image : <input type="file" value="<?php echo $sub_cat_image ?>" name="sub_cat_image"> <br>
-         <input type="submit" name="submit">
+<?php
 
-     </form>
-</body>
-</html>
+
+include_once "include/header.php";
+
+?>
+
+
+<!-- new data -->
+<div class="right_col" role="main">
+    <div class="container mt-5">
+        <div class="row  justify-content-center">
+            <div class="col-8 shadow-sm p-3 mb-5 ">
+                <form action="" enctype="multipart/form-data" method="post">
+                    <div class="row my-3">
+                        <div class="col-4 "><label for="">Sub Category Name</label></div>
+                        <div class="col-8 ">
+                            <input type="text" name="sub_cat_name" class="form-control  " value="<?php echo $sub_cat_name ?>" placeholder="Add Sub Category... ">
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-4 "><label for="">Sub Category Image</label></div>
+                        <div class="col-8 ">
+                            <input type="file" name="sub_cat_image"  value="<?php echo $sub_cat_image ?>"  class="form-control  " >
+                        </div>
+                    </div>
+                    <div class="row my-3 " title="click the image">
+                        <div class="col-4 "><label for="">Sub Category Image </label></div>
+                        <div class="col-8 ">
+                         <img src="<?php echo $sub_cat_image ?>" height="auto" width="30%" alt="no image"  > 
+                        </div>
+                    </div>
+                    <button class="btn btn-success mt-2 px-3" name="submit" type="submit">Submit</button>
+                     
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+
+<!-- /page content -->
+<?php
+include_once "include/footer.php";
+?>

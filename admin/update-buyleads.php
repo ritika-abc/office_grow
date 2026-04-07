@@ -1,128 +1,82 @@
-<?php
+ <?php
 ob_start();
 include_once "include/header.php";
 include "config.php";
 
-if (isset($_GET['pro_id'])) {
-    $pro_id = $_GET['pro_id'];
+if (isset($_GET['buyleads_id'])) {
+    $buyleads_id  = $_GET['buyleads_id'];
 
-    $sql = "SELECT * FROM `product` WHERE `pro_id`='$pro_id'";
+    $sql = "SELECT * FROM `buyleads` WHERE `buyleads_id`='$buyleads_id'";
     $query = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($query);
 
+    $buyer_name = $row['buyer_name'];
+    $queiry_for = $row['queiry_for'];
+    $number = $row['number']; // d
+    $accessed_at = $row['accessed_at'];
+    $buyer_email = $row['buyer_email'];
+    $quantity = $row['quantity'];
     $product_name = $row['product_name'];
-    $price = $row['price'];
-    $unit = $row['unit']; // d
-    $product_description = $row['product_description'];
-    $company_name = $row['company_name'];
-    $moq = $row['moq'];
-    $product_image1 = $row['product_image1'];
     
-    $company_logo = $row['company_logo'];
-    $title = $row['title'];
-    $company_experience = $row['company_experience'];
-    $number = $row['number'];
-    $iec = $row['iec'];
-    $gst = $row['gst'];
-    $website = $row['website'];
-    $state_name = $row['state_name'];
     $country_name = $row['country_name'];
-    $packaging_type = $row['packaging_type'];
-    $city = $row['city'];
-    $company_address = $row['company_address'];
-    $client_name = $row['client_name'];
-    $plan = $row['plan'];
+    $state_name = $row['state_name'];
+    $payment_mode = $row['payment_mode'];
+    $shipping_mode = $row['shipping_mode'];
     
-    $about_company = $row['about_company'];
 }
 
 if (isset($_POST['submit'])) {
-    $pro_id = $_GET['pro_id'];
+   $buyleads_id  = $_GET['buyleads_id'];
 
-    $product_name = $_POST['product_name'];
-    $price = $_POST['price'];
-    $state_name = $_POST['state_name'];
+    $buyer_name = $_POST['buyer_name'];
+    $queiry_for = test_input($_POST['queiry_for']);
+    $number = $_POST['number']; // d
+    $accessed_at = $_POST['accessed_at'];
+    $buyer_email = test_input($_POST['buyer_email']);
+    $quantity = $_POST['quantity'];
+    $product_name = test_input($_POST['product_name']);
+    
     $country_name = $_POST['country_name'];
-    $packaging_type = $_POST['packaging_type'];
-    $unit = $_POST['unit'];
-    $product_description = $_POST['product_description'];
-    $company_name = $_POST['company_name'];
-    $moq = $_POST['moq'];
-    $title = $_POST['title'];
-    $company_experience = $_POST['company_experience'];
-    $number = $_POST['number'];
-    $iec = $_POST['iec'];
-    $gst = $_POST['gst'];
-    $plan = $_POST['plan'];
-    $website = $_POST['website'];
-
-    $city = $_POST['city'];
-    $company_address = $_POST['company_address'];
-    $client_name = $_POST['client_name'];
-   
-    $about_company = $_POST['about_company'];
-
-    // Handle image uploads
-    $product_image1 = $row['product_image1'];
-    
-    $company_logo = $row['company_logo'];
-
-    if ($_FILES["product_image1"]["name"]) {
-        $product_image1 =time(). "-". $_FILES["product_image1"]["name"];
-        $fld1 = "product-image/" . $product_image1;
-        move_uploaded_file($_FILES["product_image1"]["tmp_name"], $fld1);
-    }
+    $state_name = $_POST['state_name'];
+    $payment_mode = $_POST['payment_mode'];
+    $shipping_mode = $_POST['shipping_mode'];
 
     
-
-    if ($_FILES["company_logo"]["name"]) {
-        $company_logo = $_FILES["company_logo"]["name"];
-        $fld4 = "product-image/" . $company_logo;
-        move_uploaded_file($_FILES["company_logo"]["tmp_name"], $fld4);
-    }
 
     // Update query
-    $sql = "UPDATE `product` SET 
-            `product_name`='$product_name',
-            `price`='$price',
-            `unit`='$unit',
-            `product_description`='$product_description',
-            `company_name`='$company_name',
-            `moq`='$moq',
-            `title`='$title',
-            `company_experience`='$company_experience',
+    $sql = "UPDATE `buyleads` SET 
+            `buyer_name`='$buyer_name',
+            `queiry_for`='$queiry_for',
             `number`='$number',
-            `iec`='$iec',
-            `plan`='$plan',
-            `gst`='$gst',
-            `website`='$website',            
-            `state_name`='$state_name',
+            `accessed_at`='$accessed_at',
+            `buyer_email`='$buyer_email',
+            `quantity`='$quantity',
+            `product_name`='$product_name',
             `country_name`='$country_name',
-            `packaging_type`='$packaging_type',
-            `client_name`='$client_name',            
-            `city`='$city',
-            `about_company`='$about_company',
-            `company_address`='$company_address'";
+            `payment_mode`='$payment_mode',
+            `shipping_mode`='$shipping_mode',
+            `state_name`='$state_name'";
 
-    // Append image fields if they are updated
-    if ($_FILES["product_image1"]["name"]) {
-        $sql .= ", `product_image1`='$fld1'";
-    }
-    
-    if ($_FILES["company_logo"]["name"]) {
-        $sql .= ", `company_logo`='$fld4'";
-    }
+   
 
-    $sql .= " WHERE `pro_id`='$pro_id'";
+    $sql .= " WHERE `buyleads_id`='$buyleads_id'";
 
     $query1 = mysqli_query($con, $sql);
 
     if ($query1) {
-        header("location:view-product.php");
+        header("location:view-buyleads.php");
         exit();
     } else {
         echo "<script>alert('error')</script>";
     }
+}
+
+function test_input($data) {
+    $data = trim($data);
+      $data = preg_replace('/\s+/', ' ', $data); // Remove all whitespace characters
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
 }
 ?>
 
@@ -132,85 +86,61 @@ if (isset($_POST['submit'])) {
     <h3 class="my-3">Update Product Information</h3>
     <form action="" method="post" enctype="multipart/form-data">
         <div class="row">
+             <div class="col-12 col-md-4 my-3 text-capitalize">
+                <label for="">product_name</label>
+                <input type="text" name="product_name" value="<?php echo $product_name ?>" class="form-control mt-1  q">
+            </div>
+           
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Product Name</label>
-                <input type="text" name="product_name" value="<?php echo $product_name ?>" class="form-control mt-1">
+                <label for="">queiry_for</label>
+                <input type="text" name="queiry_for" value="<?php echo $queiry_for ?>" class="form-control mt-1">
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Price</label>
-                <input type="text" name="price" value="<?php echo $price ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Unit</label>
-                <input type="text" name="unit" value="<?php echo $unit ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Company Name</label>
-                <input type="text" name="company_name" value="<?php echo $company_name ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">MOQ</label>
-                <input type="text" name="moq" value="<?php echo $moq ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Plan</label>
-                <select name="plan" class="form-control mt-1 ">
-                    <option value="not-active">Not Active</option>
-                   <option value="prime-user" <?php if ($plan == 'prime-user') echo 'selected'; ?>>Prime User</option>
-                   <option value="star-user" <?php if ($plan == 'star-user') echo 'selected'; ?>>Star User</option>
-                   <option value="galaxy-user" <?php if ($plan == 'galaxy-user') echo 'selected'; ?>>Galaxy User</option>
-                   
-                  
-                </select>
-            </div>
-
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Company Experience</label>
-                <input type="text" name="company_experience" value="<?php echo $company_experience ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Number</label>
+                <label for="">number</label>
                 <input type="text" name="number" value="<?php echo $number ?>" class="form-control mt-1">
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">IEC</label>
-                <input type="text" name="iec" value="<?php echo $iec ?>" class="form-control mt-1">
+                <label for="">accessed_at</label>
+                <input type="date" name="accessed_at" value="<?php echo $accessed_at ?>" class="form-control mt-1">
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">GST</label>
-                <input type="text" name="gst" value="<?php echo $gst ?>" class="form-control mt-1">
+                <label for="">buyer_email</label>
+                <input type="text" name="buyer_email" value="<?php echo $buyer_email ?>" class="form-control mt-1">
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">packaging Type</label>
-                <input type="text" name="packaging_type" value="<?php echo $packaging_type ?>" class="form-control mt-1">
+                <label for="">quantity</label>
+                <input type="text" name="quantity" value="<?php echo $quantity ?>" class="form-control mt-1">
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">Website</label>
-                <input type="text" name="website" value="<?php echo $website ?>" class="form-control mt-1">
+                <label for="">Mode Of Payment</label>
+                 <select class="form-control" name="payment_mode">
+                         <option >-------Select Mode Of Payment-----</option>
+                         <option value="L.C" <?php if ($payment_mode == 'L.C') echo 'selected'; ?> >L.C</option>
+                         <option value="T.T" <?php if ($payment_mode == 'T.T') echo 'selected'; ?>>T.T</option>
+                       
+                     </select>
             </div>
             <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">City</label>
-                <input type="text" name="city" value="<?php echo $city ?>" class="form-control mt-1">
+                <label for="">Shipping Mode</label>
+                 <select class="form-control" name="shipping_mode">
+                         <option >-------Shipping Mode-----</option>
+                         
+                         <option value="F.O.B" <?php if ($shipping_mode == 'F.O.B') echo 'selected'; ?>>F.O.B</option>
+                         <option value="C.I.F" <?php if ($shipping_mode == 'C.I.F') echo 'selected'; ?>>C.I.F</option>
+                     </select>
             </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">company address</label>
-                <input type="text" name="company_address" value="<?php echo $company_address ?>" class="form-control mt-1">
-            </div>
-            <div class="col-12 col-md-4 my-3 text-capitalize">
-                <label for="">client name</label>
-                <input type="text" name="client_name" value="<?php echo $client_name ?>" class="form-control mt-1">
-            </div>
-           
+          
 
 
 
 
 
-            <div class="col-12 col-lg-6 my-2">
+
+            <div class="col-12 col-lg-6 my-1">
                 <!--<label for="">add state name </label>-->
                 <div class="  my-3 text-capitalize">
                     <label for="">states name</label>
-                    <select name="state_name" class="form-control mt-1" id="">
+                    <select name="state_name" class="form-control  " id="">
                         <option value="">------------- select -------------</option>
                         <option value="Andhra Pradesh" <?php if ($state_name == 'Andhra Pradesh') echo 'selected'; ?>>Andhra Pradesh</option>
                         <option value="Arunachal Pradesh" <?php if ($state_name == 'Arunachal Pradesh') echo 'selected'; ?>>Arunachal Pradesh</option>
@@ -251,7 +181,6 @@ if (isset($_POST['submit'])) {
                     </select>
                 </div>
             </div>
-            
             <div class="col-12 col-lg-6 my-2">
                 <!--<label for="">add state name </label>-->
                 <div class="  my-3 text-capitalize">
@@ -259,10 +188,6 @@ if (isset($_POST['submit'])) {
                     <select name="country_name" class="form-control" id="category-dropdown">
                         <option value="">------ Select Countries -----</option>
                         <option value="Afghanistan" <?php if ($country_name == 'Afghanistan') echo 'selected'; ?>>Afghanistan</option>
-
-
-
-
                         <option value="Albania" <?php if ($country_name == 'Albania') echo 'selected'; ?>>Albania</option>
                         <option value="Algeria" <?php if ($country_name == 'Algeria') echo 'selected'; ?>>Algeria</option>
                         <option value="Andorra" <?php if ($country_name == 'Andorra') echo 'selected'; ?>>Andorra</option>
@@ -464,62 +389,50 @@ if (isset($_POST['submit'])) {
 
 
 
-            <div class="col-12 col-md-12 my-3 text-capitalize">
-                <label for="">Product Description</label>
-                <textarea name="product_description" class="form-control" rows="5"><?php echo $product_description ?></textarea>
-            </div>
             
-            <div class="col-12 col-md-12 my-3 text-capitalize">
-                <label for="">About Company</label>
-                <textarea name="about_company" class="form-control" rows="5"><?php echo $about_company ?></textarea>
-            </div>
+            
+            
         </div>
 
         <hr>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-12">
-                        <h6>Product image</h6>
-
-                    </div>
-                    <div class="col-3">
-                        <img src="<?php echo $product_image1 ?>" height="100px" width="100px" class="my-2" alt="">
-
-                    </div>
-                    <div class="col-6">
-                        <label for="">Product Image </label>
-
-                        <input type="file" class="form-control" name="product_image1">
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 mt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <h6>Comapny Logo image</h6>
-
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="<?php echo $company_logo ?>" height="100px" width="100px" class="my-2" alt="">
-
-                            </div>
-                            <div class="col-6">
-                                <label for="">Company Logo</label>
-
-                                <input type="file" class="form-control" name="company_logo">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <input type="submit" class="btn btn-success mt-4" name="submit" value="Update">
+        <a href="https://growindiaexport.com/admin/view-buyleads.php" class="btn btn-success mt-4" name="submit" >Go Back</a>
     </form>
 </div>
+
+
+
+
+
+
+
+<script>
+        // Get all elements with class 'q' (the three input fields)
+        const inputs = document.getElementsByClassName('q');
+    
+        // Special characters to check for
+        const specialCharacters = ['<', '>', '#', '^', ',', '*' ,'!','~','`','$','/','(',')'];
+    
+        // Function to validate input and alert if special characters are detected
+        function validateInput(event) {
+            const inputValue = event.target.value;
+    
+            // Check if any special character is found in the input
+            for (let char of specialCharacters) {
+                if (inputValue.includes(char)) {
+                    alert("Special character detected!");
+                    event.target.value = "";  // Clear the input value
+                    break;  // Stop after the first special character is found
+                }
+            }
+        }
+    
+        // Add event listener to all inputs
+        for (let input of inputs) {
+            input.addEventListener('input', validateInput);
+        }
+    </script>
 <!-- /page content -->
 <?php
 include_once "include/footer.php";

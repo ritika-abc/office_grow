@@ -55,13 +55,20 @@
 </style>
 
 
+
 <?php
+// Uncomment to start the session if needed
+// session_start();
+
+// Uncomment to check for session variable if needed
+// if (!isset($_SESSION["password"])) {
+//     header("Location:index.php");
+// }
+
 include_once "include/header.php";
 include "config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // -------- Your existing variables --------
     $product_name = i($_POST['product_name']);
     $cat_id = i($_POST['cat_id']);
     $sub_id = i($_POST['sub_id']);
@@ -88,61 +95,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $business_type = i($_POST['business_type']);
     $company_address = i($_POST['company_address']);
 
-    // ------------------------------------------
-    //  ALLOWED FILE EXTENSIONS
-    // ------------------------------------------
-    $allowed_ext = ['jpg', 'jpeg', 'png'];
-
-    // -------------- Validate Product Image ---------------
-    $product_image1_name = $_FILES["product_image1"]["name"];
-    $product_image1_ext = strtolower(pathinfo($product_image1_name, PATHINFO_EXTENSION));
-
-    if (!in_array($product_image1_ext, $allowed_ext)) {
-        echo "<script>alert('Only JPG, JPEG, PNG allowed for Product Image'); window.history.back();</script>";
-        exit;
-    }
-
-    // -------------- Validate Company Logo ---------------
-    $company_logo_name = $_FILES["company_logo"]["name"];
-    $company_logo_ext = strtolower(pathinfo($company_logo_name, PATHINFO_EXTENSION));
-
-    if (!in_array($company_logo_ext, $allowed_ext)) {
-        echo "<script>alert('Only JPG, JPEG, PNG allowed for Company Logo'); window.history.back();</script>";
-        exit;
-    }
-
-    // ------------------------------------------
-    //  MOVE FILES ONLY IF EXTENSIONS ARE VALID
-    // ------------------------------------------
-    $product_image1 = time() . "-" . $product_image1_name;
+    // Handle file uploads
+    $product_image1 = $_FILES["product_image1"]["name"];
     $fld1 = "extra_image/" . $product_image1;
     move_uploaded_file($_FILES["product_image1"]['tmp_name'], $fld1);
 
-    $company_logo = time() . "-" . $company_logo_name;
+    $company_logo = $_FILES["company_logo"]["name"];
     $fld2 = "extra_image/" . $company_logo;
     move_uploaded_file($_FILES["company_logo"]['tmp_name'], $fld2);
 
-    // ------------------------------------------
-    //  INSERT INTO DATABASE
-    // ------------------------------------------
-    $stmt = $con->prepare("INSERT INTO product 
-        (product_name, price, product_description, cat_id, sub_id, micro_id, inner_cat_id, product_image1, state_name, country_name, company_name, company_experience, iec, gst, website, company_logo, client_name, about_company, moq, packaging_type, product_life, feature, unit, business_type, company_address, plan)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-    $stmt->bind_param('sssssssssssssssssssssssssd',
-        $product_name, $price, $product_description, $cat_id, $sub_id, $micro_id, $inner_cat_id,
-        $fld1, $state_name, $country_name, $company_name, $company_experience, $iec, $gst, $website, 
-        $fld2, $client_name, $about_company, $moq, $packaging_type, $product_life, $feature, $unit,
-        $business_type, $company_address, $plan
-    );
+    $stmt = $con->prepare("INSERT INTO  product ( product_name ,  price ,  product_description ,  cat_id ,  sub_id ,  micro_id ,  inner_cat_id ,  product_image1 ,  state_name , country_name ,  company_name ,  company_experience ,  iec ,  gst ,  website ,  company_logo ,  client_name  , about_company , moq  , packaging_type , product_life , feature , unit , business_type ,  company_address,plan ) value (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?, ?, ?,?, ?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('sssssssssssssssssssssssssd',  $product_name,  $price,  $product_description,  $cat_id,  $sub_id,  $micro_id,   $inner_cat_id,  $fld1,  $state_name, $country_name, $company_name,  $company_experience,  $iec,  $gst,  $website,  $fld2,  $client_name, $about_company, $moq, $packaging_type, $product_life, $feature,  $unit, $business_type, $company_address, $plan);
 
     $stmt->execute();
+
+    // Close the statement and connection
     $stmt->close();
 
-    echo "<script>alert('Product Added Successfully!'); window.location='product.php';</script>";
+    // $sql = "INSERT INTO `product`(`product_name`, `price`, `product_description`, `cat_id`, `sub_id`, `micro_id`, `inner_cat_id`, `product_image1`, `state_name`,`country_name`, `company_name`, `company_experience`, `iec`, `gst`, `website`, `company_logo`, `client_name`,`about_company`,`moq`,`packaging_type`,`product_life`,`feature`,`unit`,`business_type`,`company_address`) value ('$product_name', '$price', '$product_description', '$cat_id', '$sub_id', '$micro_id', '$inner_cat_id', '$fld1', '$state_name','$country_name','$company_name', '$company_experience', '$iec', '$gst', '$website', '$fld2', '$client_name','$about_company','$moq','$packaging_type','$product_life','$feature','$unit','$business_type','$company_address')";
+    // $q = mysqli_query($con, $sql);
 }
- 
-
 function i($data)
 {
     $data = trim($data);
